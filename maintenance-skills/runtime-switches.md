@@ -22,7 +22,7 @@ cp -r .aios-sample .aios          # Windows: xcopy /E /I .aios-sample .aios
 
 | 文件 | 作用 | 缺省（文件缺失时） | `.aios-sample` 建议值 | 代码锚点 |
 |---|---|---|---|---|
-| `.aios/cap-cells.json` | `max` = 检索候选上限 · `claimHint` = 开工提示文案 · `domainInject` = **声明驱动的域注入** | `max=2` · `claimHint="generic"` · `domainInject="off"` | `{"max":1,"claimHint":"generic","domainInject":"on"}` | `capCellsConfig` · `phaseMaxCandidates` · `capNudgeEnabled` |
+| `.aios/cap-cells.json` | `max` = 检索候选上限 · `claimHint` = 开工提示文案 · `domainInject` = **声明驱动的域注入** | `max=1` · `claimHint="off"` · `domainInject="off"` | `{"max":1,"claimHint":"generic","domainInject":"on"}` | `capCellsConfig` · `phaseMaxCandidates` · `capNudgeEnabled` |
 | `.aios/phase_inject.json` | **阶段注入总闸**（含检索注入；也是域注入的总闸） | **开** | `{"enabled":true}` | `phaseInjectEnabled` |
 | `.aios/experience_recall.json` | 失败签名触发的经验召回 | **关** | `{"enabled":true}` | `experienceRecallEnabled` |
 | `.aios/r3-wake.json` | **R3 空闲唤醒 / 记忆维护** | **关**（缺失 / 非严格 `true` ⇒ 关） | `{"enabled":false}`（需要时再开） | `r3WakePath` · `disarmR3Wake` |

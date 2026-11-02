@@ -222,7 +222,7 @@ python tools/task_card.py capability <TASK-ID> --name domain-docs --why "<≥8 �
 
 | 文件 | 同步什么 |
 |---|---|
-| `capabilities/INDEX.md` | **片数**（第 4 列）**和「什么时候用」列**（域文件 `intro` 改了就跟着改；⛔ 两处漂移是本轮实测踩到的坑） |
+| `auto_capability（返回 8 个领域词表）` | **片数**（第 4 列）**和「什么时候用」列**（域文件 `intro` 改了就跟着改；⛔ 两处漂移是本轮实测踩到的坑） |
 | `capabilities/_aliases.json` | 旧名若被合并掉 ⇒ 加映射 |
 | `capabilities/domain-*.md` 自身 | `parts:` 与「## 做法」一一对应；改 `intro` 时同步 `keywords`（新增做法的检索词） |
 

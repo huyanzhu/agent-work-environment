@@ -1,7 +1,19 @@
 # Changelog
 
-> 当前版本：**0.1.19**。版本号的唯一事实源是 `package.json` 的 `version` 字段；
+> 当前版本：**0.1.20**。版本号的唯一事实源是 `package.json` 的 `version` 字段；
 > 发布物的 `package.json`、Git tag 与本文件标题应保持三处一致。
+
+## 0.1.20
+
+- **检索路径文档补 `confirmed`**：`auto_capability` 的检索分支要求 `confirmed`（`user` / `agent-inferred`）；
+  只给 `what` 仍直接返回 8 个领域词表（不检索、不记录）。
+- **工作记忆入口文档重写**：`task_cards/README.md` 按真实目录与流程重写（去掉不存在的历史树、内部项目名与旧口径）。
+- **文档一致性修复**：经验族卡 6 张（原写 12）· 配置缺省 `max=1`/`claimHint=off` 对齐代码 ·
+  `CONFIGURATION` 版本对齐 · 证据包读数标注当日口径 · RELEASE 附录文件数与干净 clone 一致（271）·
+  `TOOL_RUNTIME` 去内部项目名/死引用 · `samples/walkthrough.md` 补首次初始化 `.aios`。
+- **默认值单一事实源**：`.aios-sample` 的值收敛到随发布模块 `tools/aios_switches.py`；
+  新增默认契约测试（样本文件 / README / 事实源逐值一致），修复干净克隆里测试必红的问题（147 tests）。
+- **门禁加固**：新增「文档数字 vs 产物实测」（README 写错即红）；过时项与断链纳入发布前扫描。
 
 ## 0.1.19
 

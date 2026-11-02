@@ -25,7 +25,7 @@ python -m unittest discover -s tools/tests -p "test_*.py"
 node runtime/tests/activation.test.mjs
 #   合计 208 项 · 通过 207 · 失败 1
 
-python scratch/_module_graph.py
+# （模块图脚本事作者侧工具，不随发布）
 #   反向依赖条数: 0
 #   横向依赖条数: 0
 #   （本地开发目录；不随发布 —— 发布物里用 tools/probes/_unbound_refs_lint.py 与 _tsc_lint.py 兜底）

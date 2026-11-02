@@ -50,7 +50,7 @@ Estimated Finish: YYYY-MM-DD / TBD
 > ① 含**动作词 + 受控工作对象词**（前端 / 后端 / 数据库 / 设计 / 测试 / 部署 / 检索 / 运行时 / 技能 / 记忆 / 文档 / 审核）
 > ② ⛔ 不以非施工词开头（等待 / 验收 / 裁定 / 观察期 / 归档 / 确认后 / 待）
 > ③ ≤120 字符 ｜ ④ 等待型：`等待 <谁> <什么>；到位后 <动作 + 对象>`
-> 正例 `按 REBUILD_PLAN §7 推进前端（S6）` ｜ 反例 `用户验收（试用系统、查看报告）`
+> 正例 `按计划 §7 推进前端（S6）` ｜ 反例 `用户验收（试用系统、查看报告）`
 > ⚠️ 本说明写在**代码块之外** —— 避免被当作 `Next Action:` 的缩进续行并入（`task_start._next_action()` 会并入续行）
 
 ---
@@ -145,7 +145,7 @@ Capture observations during the task. Review before close — anything worth a p
 
 - [ ] Deliverables completed
 - [ ] Pattern extracted (if any)
-- [ ] Telemetry written
+- [ ] 观察 / 经验已按需沉淀（PITFALLS 或经验族卡）
 - [ ] Task Card cleaned (open questions resolved, blocked cleared, temp notes removed)
 - [ ] Task Card archived
 - [ ] 能力见上方『使用的能力』节，校验用 `_capability_choice_lint.py`

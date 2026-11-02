@@ -64,7 +64,7 @@ python tools/probes/_clone_selftest.py
 
 ```ts
 export const name = 'aios-activation'
-export const inject = ['tools']
+export const inject = []  // 可注册的工具名；本插件不额外注册
 export function apply(ctx: any): void
 ```
 
@@ -124,13 +124,13 @@ python tools/task_card.py release 示例/TASK-YYYYMMDD-001 --state=Completed
 | `README.md` | 产品介绍 + 启动顺序（唯一必读，点名下一步） |
 | `ONBOARD.md` | 接入（身份 / 原则 / 收入收工） |
 | `TOOL_RUNTIME.md` | Agent 实际用的工具一行式 + 调用约定 |
-| `capabilities/` | **能力库**：8 个域能力（50 片）+ `INDEX.md` 入口 |
-| `domains/experiences/` | **经验族卡**（12 张）+ 坑清单 `task_cards/memory/PITFALLS.md`（发布版 111 条） |
+| `capabilities/` | **能力库**：8 个域能力（50 片）；入口 = `auto_capability`，`INDEX.md` 是目录 |
+| `domains/experiences/` | **经验族卡**（6 张）+ 坑清单 `task_cards/memory/PITFALLS.md`（发布版 111 条） |
 | `task_cards/` | **任务卡工作记忆**（`active/<项目>/`）+ 卡模板 |
 | `runtime/` | 本体（插件）：阶段注入 / 节点注入 / 经验召回 / R3 唤醒，15 模块 |
 | `tools/` | 机制：卡系统、校验闸门（`probes/`）、回归门 |
 | `maintenance-skills/` | 维护手册：经验族流水线、能力融合、**开关清单** |
-| `docs/` | 架构 / 能力 / 限制 / 安全 四份 | 
+| `docs/` | 架构 / 能力 / 配置 / 限制 / 安全 五份 | 
 | `workspaces/ai-os-public/` | **对外五件**（问题 / 原则 / 方法 / 证据 / 入口） |
 
 ## 9. 想先看证据再决定用不用

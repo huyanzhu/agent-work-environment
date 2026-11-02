@@ -26,7 +26,7 @@
 └───────────┬──────────────────────────────────────────────────┘
             ▼
 ┌──────────────────────────────────────────────────────────────┐
-│ 语料层：capabilities/（8 域 50 片） · domains/experiences/（12 张族卡）│
+│ 语料层：capabilities/（8 域 50 片） · domains/experiences/（6 张族卡）│
 │         task_cards/memory/PITFALLS.md（发布版 111 条）              │
 └──────────────────────────────────────────────────────────────┘
 ┌──────────────────────────────────────────────────────────────┐
@@ -85,7 +85,7 @@ L3  delivery/probe-state         → probe · phase-policy · phase-candidates �
 入口 aios-activation.ts          → 全部
 ```
 
-**四条硬规则**（改代码前必读）：
+**四条依赖硬规则**（改代码前必读；运行期另有五条，见 `runtime/README.md`）：
 
 1. ⛔ **模块不得 import 入口**（反向依赖）。共享件下沉到 L0/L1。
 2. ⛔ **`activation/* → maintenance/*` 禁止**；`delivery/* ↔ maintenance/*` 也不得有横向依赖。

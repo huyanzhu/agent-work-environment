@@ -51,6 +51,10 @@ python tools/probes/_release_manifest.py --root . --verify MANIFEST.sha256   # �
 
 | 路径 | 文件数 |
 |---|---|
+| `.aios-sample/` | 6 |
+| `.claude/` | 2 |
+| `.gitattributes` | 1 |
+| `.gitignore` | 1 |
 | `AGENTS.md` | 1 |
 | `CHANGELOG.md` | 1 |
 | `LICENSE` | 1 |
@@ -71,7 +75,8 @@ python tools/probes/_release_manifest.py --root . --verify MANIFEST.sha256   # �
 | `tools/` | 67 |
 | `workspaces/` | 6 |
 | `样例账本.md` | 1 |
+| `MANIFEST.sha256` | 1 |
 | `RELEASE.md` | 1 |
-| **合计** | **260** |
+| **合计** | **271** |
 
 > 生成命令：`python tools/release_assemble.py`（作者侧工具，**未随发布**）。

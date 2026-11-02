@@ -1,7 +1,7 @@
 # AI-OS 工具运行时（Agent 实际使用的）
 
 > 本文档 = 工具入口：每个工具一句话（是什么 / 什么时候用）。
-> **当前工作入口（2026-10-09 起）**：`task_cards/README.md`（总项目 `AI-OS v2` + 三子项目：P0 / 强化与适配 / 顾问重构）。
+> **当前工作入口**：`README.md`（启动顺序）· `AGENTS.md`（宪法）· `QUICKSTART.md`（从零上手）；工作记忆见 `task_cards/README.md`。
 > 请阅读 `README.md` 并按照规范执行；正在执行或执行过不管。
 
 ## 1. 工具一行式
@@ -10,7 +10,7 @@
 |---|---|---|
 | `tools/task_card.py` | 任务卡管理：`list`（看进行中卡片，含项目文件夹）· `create <标题>`（建卡）· `archive TASK-ID --confirm`（归档：任务完成 + 用户确认）· **`claim TASK-ID`**（显式占用：`Planning`/`Parked` → `Executing`）· **`release TASK-ID --state=Parked\|Completed`**（显式释放 · 必填）· **`states`**（只读状态校验：报缺失 / 值域外） | 开工建卡记目标；**开工用 `claim` 声明占用，本轮结束用 `release` 声明释放**（`State` = 占用声明 · ⛔ 脚本不自动改 · 停止 ≠ 结束）；任务完成且用户确认后归档；项目级状态用 `PROJECT.md`（项目文件夹内） |
 | `tools/experience_push.py` | 经验推送：按当前任务描述检索相关经验并**直接展示内容摘要（命中请采纳）**（Don't Pay Twice）。**外部记忆默认关闭**：仅检索当前环境（SUCCESS_LOG + domains + 项目内 `.workbuddy`）；设置 `AIOS_EXTERNAL_MEMORY` 环境变量才接入外部记忆（显式 opt-in） | 任务开始或卡住时运行；命中即采纳 |
-| `tools/task_start.py` | **开工视图**（2026-10-09 职责收敛后）：**无参 = 只做任务恢复**（有哪些卡可能要继续 + 卡内 Goal / 下一步 / 路径）；**带任务描述 = 加做材料发现**（经验 / 能力候选，与 R4 **同源判据**）。收敛依据：开工时**还不知道用户要做什么**，实测无 prompt 时能力 trigger **9/9 全命中** = 噪声（`AUTOMATION-BOUNDARY.md §12.0.1 §12.2`） | 每轮开工：先跑**无参**版恢复上下文；需要**按任务**检索经验 / 能力时带描述（或 `--auto`）重跑 |
+| `tools/task_start.py` | **开工视图**：**无参 = 只做任务恢复**（有哪些卡可能要继续 + 卡内 Goal / 下一步 / 路径）；**带任务描述 = 加做材料发现**（经验 / 能力候选，与 R4 **同源判据**）。收敛依据：开工时**还不知道用户要做什么**，实测无 prompt 时能力 trigger **9/9 全命中** = 噪声（`AUTOMATION-BOUNDARY.md §12.0.1 §12.2`） | 每轮开工：先跑**无参**版恢复上下文；需要**按任务**检索经验 / 能力时带描述（或 `--auto`）重跑 |
 | `tools/aios-hook.py` | **R0 稳定入口（dispatcher）**：`.claude/hooks.json` 三个事件都指向它（`<Event>` = `SessionStart` / `UserPromptSubmit` / `Stop`）。它读**运行期开关** `.claude/aios-exposure.json`，按开关决定跑哪些 action，汇总成**一行 JSON**。**只做路由** —— 不是状态源 · 不做判断 · 任何路径 `exit 0` | **不需要手工调用**；要开/关一个暴露 ⇒ **改 `.claude/aios-exposure.json` 一行即生效，不需要重启**（这是它存在的唯一理由 · `§12.1`）· 诊断看轨迹 `hook/result` 的 stderr |
 | `tools/task-start-hook.py` | R1「**任务恢复**」的可独立执行**薄壳**：输出 Claude Code 方言的一行 JSON（`hookSpecificOutput.additionalContext`；实测 **949 字符 / 1520 字节**）。收敛后 runtime 正常路径已走 `tools/aios-hook.py`，本文件只作**直连 / 自测**入口（`§11.5 ⑤` 保留已验证件） | **不需要手工调用**（挂在宿主 `SessionStart` 上）；需要**绕过开关**做单点验证时直连它 |
 | `tools/observe_extract.py` | 观察提取（NC-001）：从 session JSONL 提取结构化观察（能力使用 Trace / token 成本 / 时间 / 推理片段 / Artifact） | Evolution 侧需要 Cost/Time/Trace 证据时运行（Evidence Primitive 候选，等自然需求） |
@@ -43,7 +43,7 @@
 
 本文件 < `AGENTS.md`（宪法）< 当前任务指令。它是工具层约定，不是治理栈。
 
-## 5. 故障语义（免疫器官，2026-08-05 从 BOOT.md 找回）
+## 5. 故障语义
 
 > 故障隔离判据（源自 BOOT.md）。判据用途：**这些错误是运行层故障，不是知识库/宪法损坏**——看到它们不要启动"查 domains/改宪法"的修复路径，那是错误归因。
 
@@ -55,11 +55,11 @@
 
 **对应行动**：
 - 停止当前 stream，等待下一条用户消息（provider 侧）；框架侧停止、不 replay。
-- **禁止**因此怀疑 domains/AGENTS.md/MEMORY 损坏而去重写它们（错误归因——WFI-005 C7/C8 判据："工具限制被误判为架构缺陷"是可复用失败模式）。
+- **禁止**因此怀疑 domains / AGENTS.md / 记忆损坏而去重写它们——"工具限制被误判为架构缺陷"是常见错误归因。
 - 超时允许一次有限重试；再次失败报告 timeout。
 - 未知错误码分类为 unknown，不追溯映射。
 
-## 6. 决策质量（WFI-005 三级诊断，2026-08-05 从 archive 找回）
+## 6. 决策质量（三级诊断）
 
 > 第一纪元 WFI-005 三级决策模型（验证报告 WFI-005-VAL 2026-06-15：10 个真实 Runtime/Tool/Sandbox 案例回放，**省步骤 43%、0 误判、0 漏诊**）。遇错时的诊断顺序——**从最可能的层开始，不跳过、不跳到最严重的**：
 

@@ -53,14 +53,14 @@
 1. **Runtime 与 Retrieval 分离**：TS 负责"何时触发"，Python 负责"检索什么"。
 2. **不猜域**：能力注入跟随**卡上声明**（`basis:"declared"`）；无声明 ⇒ 本拍不注入（设计，不是故障）。
 3. **失败必须分类**：子进程 `spawn-error / timeout / empty-stdout / bad-json / output-too-large` 各不相同，⛔ 不把空输出当"零候选"。
-4. **静默要可查**：18 处 catch 接 `catch-fail` 探针（限频）；5 处**故意静默**（探针通道自身 / kill 失败）并写明理由。
+4. **静默要可查**：19 处 catch 接 `catch-fail` 探针（限频）；5 处**故意静默**（探针通道自身 / kill 失败）并写明理由。
 
 ## 四层结构
 
 | 层 | 目录 | 是什么 |
 |---|---|---|
 | **约定层** | `AGENTS.md` · `README.md` · `ONBOARD.md` · `TOOL_RUNTIME.md` | 宪法 / 启动顺序 / 工具一行式 |
-| **记忆层** | `task_cards/`（`README.md` + 4 套卡模板 + `memory/` 三份空模板与 PITFALLS 发布版） | 任务卡 = 工作记忆；`memory/` = 全局记忆（本机事实**内容未随发布**） |
+| **记忆层** | `task_cards/`（`README.md` + 当前模板（v4）+ 旧版模板 + `memory/` 三份空模板与 PITFALLS 发布版） | 任务卡 = 工作记忆；`memory/` = 全局记忆（本机事实**内容未随发布**） |
 | **语料层** | `capabilities/`（8 域 50 片）· `domains/`（6 族卡 + patterns） | 该怎么做（能力）与别再踩（经验） |
 | **机制层** | `runtime/`（插件本体 · 主文件 ~4k 行 + 模块）· `tools/`（卡系统 / 5 个闸门 / 回归门）· `.aios-sample/`（开关样本） | 投递接线与可机械校验的动作 |
 

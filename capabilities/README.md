@@ -8,8 +8,8 @@
 - **8 个域能力文件**（一域一文件）：`domain-frontend` / `domain-backend` / `domain-data` / `domain-docs` / `domain-product` / `domain-ops` / `domain-job-search` / `domain-aios-itself`。
 - 每个文件 = **frontmatter**（`name` / `intro` / `axis_domain` / `axis_help` / `axis_concern` / `keywords` / `domain` / `parts[]` / `merge_of`）+ **正文**（什么时候用 / 做法 / 片的覆盖来源）。
 - **片（part）** = 可装配的最小单位，字段 `id` / `domain` / `label` / `one_line` / `from`；一个域能力内含 3–9 片。**片不带 `class`**，也没有阶段字段。
-- 索引与说明：`INDEX.md`（8 行 · 什么时候用哪个域）· `AXES-MAP.md`（三轴打标与覆盖缺口）· 本文件 · `_aliases.json`（旧名 → 域能力）。
-- `_archive/` = 历史件（17 个旧能力 + `capabilities/_archive/CELLS.md`），⛔ 只读引用，不再新增或修改。
+- 索引与说明：`INDEX.md`（8 行 · 什么时候用哪个域）· `AXES-MAP.md`（内部检索登记表，不随发布）· 本文件 · `_aliases.json`（旧名 → 域能力）。
+- `_archive/` = 历史件（旧能力 + `capabilities/_archive/CELLS.md`，不随发布），⛔ 只读引用，不再新增或修改。
 - 不默认拆解。只有真实证据证明需要拆成原子方法时，才拆进 `domains/`（知识 / pattern）。
 
 ## 与 domains/ 的区别
@@ -18,11 +18,11 @@
 |---|---|---|
 | 消费语义 | 检索 → 读 → 采纳（信息） | 检索 → 装配 → 激活工作模式（装载） |
 | 单位 | pattern / experience / guideline（可拆分） | 域能力（一域一文件 · 内含多个片） |
-| 通道 | experience_push（任务开始知识检索） | capabilities/INDEX.md（任务开始能力检索） |
+| 通道 | experience_push（任务开始知识检索） | capabilities/INDEX.md（任务开始能力检索；入口工具 = `auto_capability`） |
 
 ## 规则
 
-- **领域是唯一分类轴**：先看 `INDEX.md`，按本次**主改动所在域**选**一个**域能力，⛔ 不要一次选多个域；跨域任务也按**主改动**选，⛔ 不按阶段拆成多个能力。
+- **领域是唯一分类轴**：先调 `auto_capability`（`what` 一句）拿 8 个领域词表，按本次**主改动所在域**选**一个**域能力，⛔ 不要一次选多个域；跨域任务也按**主改动**选，⛔ 不按阶段拆成多个能力。
 - 记录（v4 缺省卡 · 单字段）：`python tools/task_card.py capability <TASK-ID> --name <域能力名|none> --why "…"`（⛔ 省略 `--stage`；只有旧 v1/v2/v3 三阶段卡才用 `--stage start|impl|close`）。
 - 只想先看「现在会提示哪个能力」而不写记录（**只读 · 不记账**）：`python tools/task_card.py capability-hint <TASK-ID>` —— `--stage` **可省略**（按单字段卡口径，与 `claim` 同一文案）；显式给 `start|impl|close` 仍接受，但域合并后提示按**域**出，阶段不再改变文案。
 - **`none` 是合法值**：本次改动没有可装配的同域能力（或照做只会误导）时用它；⛔ 不能不答，理由须 ≥8 字符且对得上本次改动（「不需要 / 无」会被拒）。

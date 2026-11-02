@@ -3,6 +3,14 @@
 > 用途：把前面几份样本**串起来** —— 让你看到「能力 / 经验 / 账本」在一次真实任务里各自什么时候出场。
 > 场景（虚构）：把一份 CSV 汇总成 JSON，并用另一套算法复算。
 
+## 前置：初始化运行期开关（只做一次）
+
+```bash
+cp -r .aios-sample .aios      # Windows: xcopy /E /I .aios-sample .aios
+```
+
+> ⛔ 不做这一步：`.aios/` 缺失 ⇒ **零注入**（阶段/节点注入、经验召回都不会发生）。
+
 ## 0. 开工：先恢复上下文（AI-OS 的"统一开工发现"）
 
 ```bash
@@ -30,7 +38,7 @@ python tools/task_card.py claim 示例/TASK-20260101-001
 
 ```bash
 # 先看能力库入口，选一个同域能力
-cat capabilities/INDEX.md
+调一次 `auto_capability`（what 写一句在做什么）→ 从返回的 8 个领域词表里选一个
 python tools/task_card.py capability 示例/TASK-20260101-001 \
   --name domain-data --why "主改动是数据汇总与复算，属数据域"
 ```

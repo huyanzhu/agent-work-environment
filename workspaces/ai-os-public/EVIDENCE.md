@@ -26,8 +26,8 @@
 | 卡系统可用 | State 全在值域内 | `python tools/task_card.py states` → `missing=0 · off-vocab=0` |
 | 机制测试 | `Ran 147 tests · OK` | `python -m unittest discover -s tools/tests -p "test_*.py"` |
 | Runtime 自测 | `合计 208 项 · 通过 207 · 失败 1`（唯一红 = `S37` 已知红） | `node runtime/tests/activation.test.mjs` |
-| 模块依赖方向 | 反向依赖 0 · 横向依赖 0 | `python scratch/_module_graph.py` |
-| 坑清单编号纪律 | 条目 112 · 唯一编号 112 | `python tools/probes/_pitfalls_id_lint.py` |
+| 模块依赖方向 | 反向依赖 0 · 横向依赖 0 | `# （模块图脚本事作者侧工具，不随发布）` |
+| 坑清单编号纪律 | 条目 111 · 唯一编号 111 | `python tools/probes/_pitfalls_id_lint.py` |
 | 克隆可用 | 干净克隆四道闸门全绿 | `python tools/probes/_clone_selftest.py` → `判定: ✅ 克隆可用` |
 | 经验召回的词面通道 | 给定 query 能命中族卡 / 坑 | `python tools/experience_push.py "中文乱码 编码"` |
 | 可选依赖缺失时的行为 | 打印指引 + `exit 2`（不吐 traceback） | `python tools/probes/_scene_probe.py` |
