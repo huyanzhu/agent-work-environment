@@ -118,7 +118,7 @@ const FC_FILE = FC_DIR + '/focus-card.json'
 process.env.AIOS_FOCUS_CARD = FC_FILE
 rmSync(FC_DIR, { recursive: true, force: true })
 mkdirSync(FC_DIR, { recursive: true })
-// 🔴 真实位快照：S95 用它断言"本自测**没有**改动真实运行数据"（A6 的**反向**判据）
+// 🔴 真实位快照：S95 用它断言"本自测**没有**改动真实运行数据"（**反向**判据）
 const REAL_FC = ROOT + '/.aios/focus-card.json'
 const REAL_FC_BEFORE = existsSync(REAL_FC) ? readFileSync(REAL_FC, 'utf8') : null
 // 🔴 **启动即清空隔离开关**：上一次运行若在断言处失败 ⇒ `clearShadow()` 不会执行 ⇒
@@ -2499,7 +2499,7 @@ check('S95 TTL 语义与路径隔离：只碰临时目录，⛔ 不触真实运�
   assert.equal(FC.focusCardFile(), FC_FILE, '`AIOS_FOCUS_CARD` 必须优先（隔离自测的唯一入口）')
   assert.ok(FC_FILE.startsWith(SCRATCH), '隔离件必须落在 scratch/ 内')
   assert.ok(FC_FILE !== REAL_FC, '隔离路径必须与真实权威位**不同**')
-  // 🔴 A6 的**反向**判据：本自测**不得**创建/修改真实运行数据
+  // 🔴 **反向**判据：本自测**不得**创建/修改真实运行数据
   //    （初版漏洞正在此处：env 设在文件尾部 ⇒ 早期用例写进了真实位）
   const realNow = existsSync(REAL_FC) ? readFileSync(REAL_FC, 'utf8') : null
   assert.equal(realNow, REAL_FC_BEFORE,
@@ -4918,7 +4918,7 @@ check('S194 纯乱码失败 ⇒ query 补编码族规范词（否则词面召回
   assert.ok(!q2.includes('mojibake'), '有 ASCII 签名时⛔ 不补规范词（避免污染原有排名）：' + q2)
 })
 
-// ── 🔴 F1（2026-11-02 审计清单 P0）：**子进程输出硬上限**的判据（纯函数锁行为）────────
+// ── **子进程输出硬上限**的判据（纯函数锁行为）────────
 //   背景：spawnJson / 影子 A-B 两处 spawn 原先只做超时兜底，out += String(d) 无字节上限
 //   ⇒ 子进程误开 debug / 异常刷栈可把宿主内存打爆，且**零探针**。
 check('S195 子进程输出上限判据：超限才算超限（边界不误杀）', () => {
@@ -4932,7 +4932,7 @@ check('S195 子进程输出上限判据：超限才算超限（边界不误杀�
   assert.equal(f(0, 1, 0), true, '0 上限 + 1 字节⇒超限')
 })
 
-// ── 🔴 F9（2026-11-02 审计清单 P2）：开关缓存失效判据（纯函数）──────────────────
+// ── 开关缓存失效判据（纯函数）──────────────────
 //   背景：readInjectProbe() 每步 pre-execute 都读盘 + JSON.parse ⇒ 热路径 IO。
 //   改法：按 mtime+size 缓存**解析结果**，每次仍 stat（「改即生效」语义不变）。
 check('S196 开关缓存失效判据：mtime 或 size 变才重读', () => {
