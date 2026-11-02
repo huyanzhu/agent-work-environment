@@ -89,7 +89,7 @@ Runtime 的分层、模块依赖图与硬规则见 [docs/ARCHITECTURE.md](docs/A
 
 | 通道 | 触发时机 | 注入什么 |
 |---|---|---|
-| **显式拉取** `auto_capability` | Agent 说清"做什么 + 要哪类能力"（检索时**必须**带 `confirmed`：`user` / `agent-inferred`） | 只给 `what` ⇒ 回 8 个领域词表；带 `need` + `confirmed` ⇒ 检索候选随工具返回（≤3 条，带路径摘要） |
+| **显式拉取** `auto_capability` | Agent 说清"做什么 + 要哪类能力"（`confirmed` 可省略：缺省 = `agent-inferred`；只有对方确认过才写 `user`） | 只给 `what` ⇒ 回 8 个领域词表；带 `need` + `confirmed` ⇒ 检索候选随工具返回（≤3 条，带路径摘要） |
 | **阶段注入** | S1 占卡后 / S2 实质改动后 / S4 收口时 | 卡上声明的域能力 `intro` + 文件路径（⛔ 不猜域） |
 | **节点注入 / 经验召回** | 命中改语料、重建索引、跑回归门等节点；或工具失败被分类 | 对应经验族卡路径 + 一句纪律 / 相关经验条目 |
 

@@ -440,10 +440,12 @@ export function buildWorkReport(session: string, args: unknown, now: number): { 
   }
   const what = str(a.what)
   if (what === '') return { ok: false, why: 'what 必填（一句话在做什么）', rep: null }
-  const confirmed = str(a.confirmed)
-  if (confirmed !== 'user' && confirmed !== 'agent-inferred') {
-    return { ok: false, why: 'confirmed 必填，且只能是 user / agent-inferred', rep: null }
+  const rawConfirmed = str(a.confirmed)
+  // v54：**可省略** —— 省略 = agent-inferred（“自己推断，只当假设存”）；显式非法值仍拒绝
+  if (rawConfirmed !== '' && rawConfirmed !== 'user' && rawConfirmed !== 'agent-inferred') {
+    return { ok: false, why: 'confirmed 只能是 user / agent-inferred（可省略，省略 = agent-inferred）', rep: null }
   }
+  const confirmed = rawConfirmed === '' ? 'agent-inferred' : rawConfirmed
   const need = list(a.need)
   const concern = list(a.concern)
   const fix = str(a.fix)

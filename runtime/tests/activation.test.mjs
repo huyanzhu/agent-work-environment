@@ -1907,8 +1907,10 @@ check('S102 `auto_capability` 载荷判据：必填 / 可信度 / 去重截断�
   // ① `what` 必填（空白不算）
   assert.equal(FC.buildWorkReport('s1', {}, NOW).ok, false)
   assert.equal(FC.buildWorkReport('s1', { what: '   ', confirmed: 'user' }, NOW).ok, false)
-  // ② `confirmed` 必填且只能是两值之一（CHANNEL §三 硬规则 1）
-  assert.equal(FC.buildWorkReport('s1', { what: 'x' }, NOW).ok, false)
+  // ② `confirmed` **可省略**（缺省 agent-inferred）；显式非法值仍拒绝
+  const rDefault = FC.buildWorkReport('s1', { what: 'x' }, NOW)
+  assert.equal(rDefault.ok, true, '省略 confirmed 应合法')
+  assert.equal(rDefault.rep.confirmed, 'agent-inferred', '缺省必须落 agent-inferred')
   assert.equal(FC.buildWorkReport('s1', { what: 'x', confirmed: 'maybe' }, NOW).ok, false)
   // ③ 正常路径：trim · 去重 · 字段回填；⛔ 不改入参
   const args = { what: '  在做作品集首页 ', need: ['前端', '前端', ''], concern: ['美观·风格'], fix: '甲方说太丑', confirmed: 'user' }

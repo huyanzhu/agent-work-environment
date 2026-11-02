@@ -2312,7 +2312,7 @@ const WORK_REPORT_DESC = [
   '用户若说「做个检索」「找找能力」「查一下有没有相关经验」—— 也是调它（这类**点名**请求优先响应）。',
   '什么时候用：开始一件事时 · 想要某类能力时 · 方向变了 · 被甲方否定了 · 发现自己缺什么时。有变化才说，不必每步都报。',
   '什么时候别用：不要用它写日志 / 报账；不要上报你还没跟对方确认过的判断。',
-  'confirmed 必填：user（对方确认过）/ agent-inferred（你自己推断的 —— 只当假设存，⛔ 不得当事实）。',
+  'confirmed **可省略**：缺省 = agent-inferred（你自己推断，只当假设存）；只有对方确认过才写 user。',
   '**调它就会先给你「8 个领域词表」**（前端 / 后端 / 数据 / 文档 / 产品 / 环境·运维 / 求职·职业 / AI-OS 自身）——'
     + '你从里面选一个，写进卡上「能力」字段即可；不需要先填别的字段。',
   '示例：{"what":"做作品集首页"} ⇒ 返回领域词表；选 `domain-job-search` 后用 task_card.py capability 记录。',
@@ -2329,7 +2329,7 @@ const WORK_REPORT_PARAMS = {
     concern: { type: 'array', items: { type: 'string' }, description: '这次最在意什么（每轴最多 6 个）。' },
     fix: { type: 'string', description: '哪里不对：转述对方原话要点。' },
     note: { type: 'string', description: '自由文本补充（可选）。' },
-    confirmed: { type: 'string', enum: ['user', 'agent-inferred'], description: '必填：user=对方确认过；agent-inferred=自己推断（只存为假设）。' },
+    confirmed: { type: 'string', enum: ['user', 'agent-inferred'], description: '可省略：缺省=agent-inferred；user=对方确认过。' },
     card: { type: 'string', description: '任务卡（可省略；Runtime 用焦点卡补）。' },
     // 🔴 （「两步式选词」）：第一次 `phase:"vocab"` 只回词表（不检索），
     //    第二次带 `axes` 提交 ⇒ 按词表值做**确定性匹配**。默认 `submit`（旧调用行为不变）。

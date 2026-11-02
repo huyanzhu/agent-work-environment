@@ -1,7 +1,15 @@
 # Changelog
 
-> 当前版本：**0.1.20**。版本号的唯一事实源是 `package.json` 的 `version` 字段；
+> 当前版本：**0.1.21**。版本号的唯一事实源是 `package.json` 的 `version` 字段；
 > 发布物的 `package.json`、Git tag 与本文件标题应保持三处一致。
+
+## 0.1.21
+
+- **`auto_capability` 不再要求 `confirmed`**：省略即视为 `agent-inferred`（自己推断，只当假设存）；
+  只有对方确认过才写 `user`。⇒ 调工具只需要一句 `what`。
+- **`need` 是可选项，不是流程的一部分**：不带 `need` ⇒ 只返回 8 个领域词表；
+  带 `need`（可再带 `axes`）⇒ 才走检索候选。日常流程（拿词表 → 选域 → 写卡 → 按声明注入）不需要它。
+- 文档同步：`README` / `docs/CAPABILITIES` 的 `confirmed` 说明改为"可省略"。
 
 ## 0.1.20
 
