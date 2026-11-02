@@ -1,47 +1,10 @@
-# 环境 / 密钥
-.env
-.env.*
-
-# Python
-__pycache__/
-*.py[cod]
-.pytest_cache/
-
-# Node
-node_modules/
-
-# 运行时数据（不入版本库；测试在运行时临时生成）
-*.db
-*.db-wal
-*.db-shm
-# 会话日志留档（evidence/sessions 只读副本）——发布时默认不随仓库
-*.jsonl
-
-# 嵌套项目仓库（各自有独立 git；AI-OS 仓库不纳入其文件）
-# 2026-10-12：ai 顾问新实现迁入项目卡目录（Human 裁定）—— 它是独立 git 仓库，不当成卡库内容
-task_cards/active/ai-consultant/ai-consultant-v2/
-
-# 运行期实例数据（开关 / 探针日志 / 生成物）—— 不随仓库发布（见 .aios/README.md）
+# 运行期状态（本机目录，不进版本控制）
 .aios/
-
-# 隔离自测与诊断产物（2026-10-15 起明确忽略）
-# · 本体自测已**转正**到 `runtime/tests/`（纳入版本控制 · 见根 `package.json` 的 `test`）
-# · 本目录因此不再是任何机制的依赖，只剩临时/诊断产物
-# · 明确忽略的收益：`git status` 不再被数十个未跟踪诊断文件淹没
-#   —— 这正是 2026-10-09 实测「改动物证被污染 ⇒ R2 选卡长期判不出项目」的根因之一
-scratch/
-
-# ── 2026-11-01 补：根目录临时/备份残留（提交批次前清出 git status）──────────────
-# · 测试临时目录（pytest / 探针自测产物，无内容价值）
-.pt-*/
-.pytest-*/
-_tmp_survey/
-# · 一次性工作目录（来源不明的临时产物）
-.probe2/
-.workbuddy/
-# · 手动备份（改 runtime 前留的 .bak-<时间戳>）
-*.bak-*
-*.orig
-# · 源码工作副本（外部仓库拷贝，用于提 PR；不是本仓内容）
+# 工作区 / 构建产物
 work/
 release/
+scratch/
+__pycache__/
+*.pyc
+node_modules/
+.venv/

@@ -696,7 +696,7 @@ check('S25 S2 卡：焦点不唯一 ⇒ 正确降级为未知（cardMapped=false
   assert.equal(t.cardGoalLen, null)
 })
 
-check('S26 记录口径（Human）：含派生关键词 · 但不含 todo / 卡 原文', () => {
+check('S26 记录口径：含派生关键词 · 但不含 todo / 卡 原文', () => {
   const blob = JSON.stringify(records())
   assert.ok(!blob.includes('编写 RLS 迁移并测试访问隔离'), 'todo 原文不得落盘')
   assert.ok(!blob.includes('重构 Hook 适配器并测试事件时序'), 'todo 原文不得落盘')
@@ -985,7 +985,7 @@ check('S44 阶段2 归属 · 无 start 帧 ⇒ unavailable/no-start-seen（原�
   assert.equal(rec.unavailableReason, 'no-start-seen', 'R7b：失败原因必须可区分')
 })
 
-check('S45 阶段2 裁定③ · assistant/attempt（provisional）⇒ 只计数 · 不留存文本', () => {
+check('S45 阶段2 · assistant/attempt（provisional）⇒ 只计数 · 不留存文本', () => {
   const beforeTexts = reasoningTexts().length
   const beforeProv = provisionalObs().length
   settlement(905, 1, [SENTINEL + '-PROVISIONAL'], { type: 'assistant/attempt' })
@@ -1142,7 +1142,7 @@ check('S53 3.1 P2 对照：**相似但不可证明重复**（Jaccard < 0.9）⇒
   assert.equal(fallback.dupSim, false)
 })
 
-check('S54 3.1 v11：**端点也受硬预算约束** ⇒ 降级到 L4 淘汰"最新一条"（v10 的 `evictBlocked` 已取消）', () => {
+check('S54 3.1 **端点也受硬预算约束** ⇒ 降级到 L4 淘汰"最新一条"（的 `evictBlocked` 已取消）', () => {
   drainTurns()
   const q1 = nextSeq(), q2 = nextSeq()
   startFrame(954, 1, 'e1', 1); settlement(954, 1, [bigText('s54-1', 'q', 20_000)], { seq: q1 })
@@ -1239,7 +1239,7 @@ const strengthOf = (turn) => {
   return rec !== undefined && rec.turningPointStrength !== undefined ? rec.turningPointStrength : { strong: 0, weak: 0, upgraded: 0 }
 }
 
-check('S60 v11：**工具对象变化默认不产生强信号**（弱信号 · 不进保护集合）', () => {
+check('S60 **工具对象变化默认不产生强信号**（弱信号 · 不进保护集合）', () => {
   drainTurns()
   // 🔴 自测的时间尺度是**毫秒级**，而 `TP_ADJACENT_MS = 60s` ⇒ 前面用例的强信号会把本用例的
   //    弱信号"邻接升级"。⇒ 用 `session-start` **重置会话内存态**（含 `lastStrongTpAt`），
@@ -1254,7 +1254,7 @@ check('S60 v11：**工具对象变化默认不产生强信号**（弱信号 · �
   assert.equal(st.strong, 0, '🔴 默认**不保护**（Human 收窄裁定的核心）')
 })
 
-check('S61 v11：**Todo 实质变化** ⇒ 强信号 · 其邻域在超预算时受保护（L3/L4 优先不动它）', () => {
+check('S61 **Todo 实质变化** ⇒ 强信号 · 其邻域在超预算时受保护（L3/L4 优先不动它）', () => {
   drainTurns()
   startFrame(961, 1, 'h1', 1); settlement(961, 1, [bigText('s61-1', 'q')])
   const qTodo = nextSeq()
@@ -1269,7 +1269,7 @@ check('S61 v11：**Todo 实质变化** ⇒ 强信号 · 其邻域在超预算时
   assert.ok((records().filter(r => r.ev === 'todo-plan').pop() || {}).newDirection === true, '判据：newDirection')
 })
 
-check('S62 v11：阶段转变**必须有成功结果支持** —— 只有签名变化不算强信号', () => {
+check('S62 阶段转变**必须有成功结果支持** —— 只有签名变化不算强信号', () => {
   drainTurns()
   // 回合 962：签名有内容，但**没有成功结果**（read 不算）
   wf('agent/pre-step', { agent: MAIN, turn: 962, step: 1, messages: [userMsg('先看清当前结构，再决定怎么推进这一块')] })
@@ -1287,7 +1287,7 @@ check('S62 v11：阶段转变**必须有成功结果支持** —— 只有签名
   assert.ok((c2.turningPointCounts['phase-change'] || 0) >= 1, '有成功结果支持 ⇒ 阶段转变成立（强信号）')
 })
 
-check('S63 v11：**任务 / 项目映射变化**（唯一焦点卡切换）⇒ 强信号', () => {
+check('S63 **任务 / 项目映射变化**（唯一焦点卡切换）⇒ 强信号', () => {
   drainTurns()
   // 🔴 自测卡树会被前面的「组合信号」用例改写 ⇒ **先显式设回已知初始态**，再建基线，最后切换
   writeFileSync(C1, card('TASK-20260101-001', 'Executing', 'S1'))
@@ -1580,7 +1580,7 @@ function fireDeferred(session, agentObj, tag) {
   return stage4Recs().length - before
 }
 
-check('S85 阶段4 门：Human 已关闭 stage4 ⇒ 通配也不再派发（代码保留 · 可回退）', () => {
+check('S85 阶段4 门：已关闭 stage4 ⇒ 通配也不再派发（代码保留 · 可回退）', () => {
   clearStage4()
   writeStage4({ enabled: true, session: '*', maxPerSession: 3, timeoutMs: 2_000 })
   const n = fireDeferred('selftest-stage4-wild', WILD_MAIN, { turn: 301, call: 's85' })
@@ -1902,7 +1902,7 @@ check('S101 占用留痕解析：`Event Log` 尾行 ⇒ {op, session}（纯函�
   assert.equal(FC.lastOccupancyOf('| Time | State | Reason | Changed By |'), null)
 })
 
-check('S102 v19 `auto_capability` 载荷判据：必填 / 可信度 / 去重截断（纯函数 · ⛔ 无 I/O · ⛔ 不记原文）', () => {
+check('S102 `auto_capability` 载荷判据：必填 / 可信度 / 去重截断（纯函数 · ⛔ 无 I/O · ⛔ 不记原文）', () => {
   const NOW = 1793106893000
   // ① `what` 必填（空白不算）
   assert.equal(FC.buildWorkReport('s1', {}, NOW).ok, false)
@@ -1936,7 +1936,7 @@ check('S102 v19 `auto_capability` 载荷判据：必填 / 可信度 / 去重截�
   assert.equal(FC.WORK_REPORT_MAX_PER_SESSION, 8)
 })
 
-check('S103 v20 `auto_capability` → 检索请求：字段 → 通道一一对应（纯函数 · ⛔ 无 I/O）', () => {
+check('S103 `auto_capability` → 检索请求：字段 → 通道一一对应（纯函数 · ⛔ 无 I/O）', () => {
   const mkRep = (over) => Object.assign({
     id: 'wr-1', session: 's1', at: 1, chars: 9, needCount: 2, concernCount: 1,
     confirmed: 'user', hasFix: true, hasCard: false,
@@ -1987,7 +1987,7 @@ check('S103 v20 `auto_capability` → 检索请求：字段 → 通道一一对�
   assert.equal(obs.searchTerms.items, 1)
 })
 
-check('S104 v21 归属 / 预算 / C 提醒（纯函数 + 只读状态；⛔ 不写盘 · ⛔ 不发消息）', () => {
+check('S104 归属 / 预算 / C 提醒（纯函数 + 只读状态；⛔ 不写盘 · ⛔ 不发消息）', () => {
   // ① 归属：主会话 ⇒ 归自己
   const main = { session: { header: { id: 'main-1', origin: 'main' } } }
   const om = FC.reportOwnerOf(main)
@@ -2034,7 +2034,7 @@ check('S104 v21 归属 / 预算 / C 提醒（纯函数 + 只读状态；⛔ 不�
   assert.equal(FC.reminderFor(mkR({ signals: [] })), null)
 })
 
-check('S105 v22 R3 维护清单：卡释放 ⇒ 注入一次（纯函数 + 注入卡列表；⛔ 不写盘）', () => {
+check('S105 R3 维护清单：卡释放 ⇒ 注入一次（纯函数 + 注入卡列表；⛔ 不写盘）', () => {
   FC.MAINT_STATE.delete(ME)
   const shell = { windowSeq: 7, me: ME, cards: [], cardEdits: new Map(), cardReads: new Map(), wc: { progress: { signals: [] } } }
   const cardsOf = (keys) => (keys || []).map(k => ({
@@ -2059,7 +2059,7 @@ check('S105 v22 R3 维护清单：卡释放 ⇒ 注入一次（纯函数 + 注�
   FC.MAINT_STATE.delete(other)
 })
 
-check('S106 v26 事件驱动注入：升沿检测 + 每事件一次（⛔ 不再用阶段状态机 ⇒ 抖动通道已移除）', () => {
+check('S106 事件驱动注入：升沿检测 + 每事件一次（⛔ 不再用阶段状态机 ⇒ 抖动通道已移除）', () => {
   // ① 交替 20 步（edit → read×7 → edit …）⇒ **v47 起不再产生任何注入**
   //    （v26 时 = 2 次；v47 T1 砍掉 first-edit / anchor-claimed：实测无上下文触发 17/36 调用、消费 0）
   const slot = { sent: new Set(), count: 0, lastHasEdit: false, lastFailStreak: 0, lastNamedTurn: null }
@@ -2107,7 +2107,7 @@ check('S106 v26 事件驱动注入：升沿检测 + 每事件一次（⛔ 不再
   }
 })
 
-check('S107 v25 阶段判据 + 用户点名（纯函数 · 对应 Human 的模糊例子）', () => {
+check('S107 阶段判据 + 用户点名（纯函数 · 对应 的模糊例子）', () => {
   const mkS = (opts) => ({
     windowSeq: 1, me: ME,
     cardEdits: new Map((opts.edits || []).map(k => [k, 1])),
@@ -2153,7 +2153,7 @@ check('S107 v25 阶段判据 + 用户点名（纯函数 · 对应 Human 的模�
   assert.ok(FC.phaseHintText('user-named').includes('auto_capability'))
 })
 
-check('S108 v26 占用判据：外置 .log 优先 · 回退卡内（防"外置后再次静默失效"）', () => {
+check('S108 占用判据：外置 .log 优先 · 回退卡内（防"外置后再次静默失效"）', () => {
   const dir = SCRATCH + '/_selftest_logext'
   rmSync(dir, { recursive: true, force: true })
   mkdirSync(dir, { recursive: true })
@@ -2176,7 +2176,7 @@ check('S108 v26 占用判据：外置 .log 优先 · 回退卡内（防"外置�
   rmSync(dir, { recursive: true, force: true })
 })
 
-check('S109 v30 内联检索：白名单含「位置 + 一句话介绍」（⛔ 正文/预览原文）· 失败不抛 · 渲染可读', () => {
+check('S109 内联检索：白名单含「位置 + 一句话介绍」（⛔ 正文/预览原文）· 失败不抛 · 渲染可读', () => {
   // ① 归一：`source.id` ⇒ `source`；channels 复制；空项跳过；**正文绝不外泄**
   const set = {
     candidates: [
@@ -2226,7 +2226,7 @@ check('S109 v30 内联检索：白名单含「位置 + 一句话介绍」（⛔ 
     '一句话介绍要有上限（防上下文膨胀）')
 })
 
-check('S110 v32 R3 卡驱动唤醒：takeover 判据（纯函数）· 每会话上限 1 · 清单六项', () => {
+check('S110 R3 卡驱动唤醒：takeover 判据（纯函数）· 每会话上限 1 · 清单六项', () => {
   // ① 标准 takeover 序列：claim A → release B（takeover from A）→ claim B
   const log = [
     '| 12:00 | Executing | claim 占用（session: session-A） | Worker |',
@@ -2255,7 +2255,7 @@ check('S110 v32 R3 卡驱动唤醒：takeover 判据（纯函数）· 每会话�
   }
 })
 
-check('S111 v33 两步式选词：axes 只收词表值 · 词表文本 · timeout 1500 · stage4 关闭', () => {
+check('S111 两步式选词：axes 只收词表值 · 词表文本 · timeout 1500 · stage4 关闭', () => {
   const now = 1793192000000
   // ① 合法值保留 / 非词表值丢弃 / 去重
   const r = FC.buildWorkReport('selftest-s111', {
@@ -2278,7 +2278,7 @@ check('S111 v33 两步式选词：axes 只收词表值 · 词表文本 · timeou
   assert.equal(FC.STAGE4_ENABLED, false, 'stage4 已按 Human 裁定关闭')
 })
 
-check('S112 v35 能力候选后的打开约束：给「打开文件」的动作指向（可被轨迹核对）', () => {
+check('S112 能力候选后的打开约束：给「打开文件」的动作指向（可被轨迹核对）', () => {
   // ① 约束句：必须要求**打开文件**（否则打开率仍不可核对）+ 保留"不判适用性"语义
   const nudge = FC.retrievalNudgeText()
   assert.ok(nudge.includes('打开对应能力文件'), '约束必须要求打开文件（可机械核对打开率）')
@@ -2314,7 +2314,7 @@ check('S112 v35 能力候选后的打开约束：给「打开文件」的动作�
 //    且**保留**文件里的其它字段（合并更新，⛔ 整体重写会误清用户手写的备注/其它键）。
 //    ⚠️ 隔离：`disarmR3Wake()` 走 `aiosStateDir()` ⇒ 用 `AIOS_STATE_DIR` 指向 scratch 临时目录，
 //       ⛔ 不碰真实 `.aios/r3-wake.json`（同 S90 的隔离纪律）。
-check('S113 v44 R3 唤醒 fire-once：成功一次后开关写回默认关（保留其它字段）', () => {
+check('S113 R3 唤醒 fire-once：成功一次后开关写回默认关（保留其它字段）', () => {
   const T = SCRATCH + '/_selftest_r3_fire_once'
   const prev = process.env.AIOS_STATE_DIR
   rmSync(T, { recursive: true, force: true })
@@ -2343,7 +2343,7 @@ check('S113 v44 R3 唤醒 fire-once：成功一次后开关写回默认关（保
   }
 })
 
-check('S114 v46 缺口触发：单次工具失败即注入（gap · 每会话一次）', () => {
+check('S114 缺口触发：单次工具失败即注入（gap · 每会话一次）', () => {
   // ① streak=1 ⇒ gap 触发（旧 stuck 要连败 2 次 ⇒ 最该提示的时机没提示）
   const slot = { sent: new Set(), count: 0, lastHasEdit: false, lastFailStreak: 0, lastNamedTurn: null }
   const e1 = FC.detectEvents(
@@ -2365,7 +2365,7 @@ check('S114 v46 缺口触发：单次工具失败即注入（gap · 每会话一
   assert.ok(t.length <= 200, 'gap 文案须短（每会话最多几条）')
 })
 
-check('S115 v47 T7′ 同一问题第 2 次：词面重合 ≥3 且两条都 ≥5 token（⛔ 无语义判断）', () => {
+check('S115 T7′ 同一问题第 2 次：词面重合 ≥3 且两条都 ≥5 token（⛔ 无语义判断）', () => {
   const long = '把这个作品集站点的首页改一下，加上能力区和证据区，保持验证全绿'
   assert.equal(FC.isRepeatQuestion('', long), false, '空历史 ⛔ 触发')
   assert.equal(FC.isRepeatQuestion(long, long + '，另外还要更新关于页'), true, '高度重合 ⇒ 触发')
@@ -2378,7 +2378,7 @@ check('S115 v47 T7′ 同一问题第 2 次：词面重合 ≥3 且两条都 ≥
   assert.ok(t.has('真实'), '中文 2-gram 入集')
 })
 
-check('S116 v47 T2 缺口分类：事实型失败（路径/重读/参数）不触发 gap', () => {
+check('S116 T2 缺口分类：事实型失败（路径/重读/参数）不触发 gap', () => {
   const mk = () => ({ sent: new Set(), count: 0, lastHasEdit: false, lastFailStreak: 0, lastNamedTurn: null })
   const evFactual = FC.detectEvents(
     { hasEdit: false, activity: [{ ok: false }], cardEdits: 0, intentText: '', turn: 1, lastFailKind: 'factual' }, mk())
@@ -2393,14 +2393,14 @@ check('S116 v47 T2 缺口分类：事实型失败（路径/重读/参数）不�
   assert.equal(FC.failKindOf({ isError: true }), 'knowledge', '拿不到内容 ⇒ 保守按知识型（仍允许提示）')
 })
 
-check('S117 v47 T5 注入限额：连续 2 条注入未换来检索 ⇒ 停发', () => {
+check('S117 T5 注入限额：连续 2 条注入未换来检索 ⇒ 停发', () => {
   assert.equal(FC.INJECT_MAX_WITHOUT_RETRIEVAL, 2)
   assert.equal(FC.injectAllowedByBudget(0), true)
   assert.equal(FC.injectAllowedByBudget(1), true)
   assert.equal(FC.injectAllowedByBudget(2), false, '连续 2 条 ⇒ 停发')
 })
 
-check('S118 v48 返回层：候选上限 3 + 按 what 词面重合重排（稳定 · ⛔ 不删候选）', () => {
+check('S118 返回层：候选上限 3 + 按 what 词面重合重排（稳定 · ⛔ 不删候选）', () => {
   assert.equal(FC.WORK_REPORT_RETRIEVAL_MAX_CANDIDATES, 3, '8 → 3（9 份访谈 7 份指向条数）')
   const mk = (id, summary, path) => ({ id, source: 'aios.capabilities', role: 'evidence', channels: [], path, summary })
   const cands = [
@@ -2495,7 +2495,7 @@ check('S94 原子替换：成功不留临时件；**失败不破坏目标、也�
   rmSync(FC_FILE, { recursive: true, force: true })
 })
 
-check('S95 A5/A6 TTL 语义与路径隔离：只碰临时目录，⛔ 不触真实运行数据', () => {
+check('S95 TTL 语义与路径隔离：只碰临时目录，⛔ 不触真实运行数据', () => {
   assert.equal(FC.focusCardFile(), FC_FILE, '`AIOS_FOCUS_CARD` 必须优先（隔离自测的唯一入口）')
   assert.ok(FC_FILE.startsWith(SCRATCH), '隔离件必须落在 scratch/ 内')
   assert.ok(FC_FILE !== REAL_FC, '隔离路径必须与真实权威位**不同**')
@@ -2542,7 +2542,7 @@ check('S97 写入计数四态齐备（written / unchanged / noCard / failed 各�
 //   ⇒（a）经验召回永不触发（b）连带吞掉同一次 post-execute 的整段注入（v26 event-hint 等）。
 //   ⚠️ 为什么既有 S119 抓不到：本文件顶部设 `AIOS_EXPERIENCE_RECALL='off'` ⇒ 5829 的 `s` 永不求值
 //      ⇒ **测试覆盖的只是"默认关路径"，接线 0 覆盖**。本用例**临时解除短路** + 隔离 state 位。
-checkAsync('S121 接线：不短路时 knowledge 失败 ⇒ 有 ev=experience-recall 且不吞 v26 inject', async () => {
+checkAsync('S121 接线：不短路时 knowledge 失败 ⇒ 有 ev=experience-recall 且不吞 inject', async () => {
   const V49 = SCRATCH + '/_selftest_v49'
   const prevStateDir = process.env.AIOS_STATE_DIR
   const prevOff = process.env.AIOS_EXPERIENCE_RECALL
@@ -2602,7 +2602,7 @@ checkAsync('S121 接线：不短路时 knowledge 失败 ⇒ 有 ev=experience-re
 //   背景：FACTUAL_FAIL_RE 含 拒绝访问/access denied/WinError 5 ⇒ 权限失败被判事实型 ⇒ v49 永不触发，
 //   权限族卡无法"自然出现"。v49c 在经验召回入口加独立 trigger `permission-error`（⛔ 不改 failKindOf）。
 //   本用例验证：权限失败真的走到 spawn + 留下 `ev=experience-recall{trigger:"permission-error"}`。
-checkAsync('S122 接线：权限/沙箱失败 ⇒ trigger=permission-error（不改 v47 fact 口径）', async () => {
+checkAsync('S122 接线：权限/沙箱失败 ⇒ trigger=permission-error（不改 fact 口径）', async () => {
   const V49C = SCRATCH + '/_selftest_v49c'
   const prevStateDir = process.env.AIOS_STATE_DIR
   const prevOff = process.env.AIOS_EXPERIENCE_RECALL
@@ -4398,13 +4398,10 @@ checkAsync('S181 nudge:"on" + 缺收尾 ⇒ S4 提醒 1 次（开工/实现已�
 check('S182 提醒文本**不含任何** 17 个能力名（能力名列表断言 · 正文逐字固定）', () => {
   // 17 个能力名来源：`capabilities/INDEX.md` 17 行（2026-11-01 现状）。
   const CAP_NAMES = [
-    'senior-engineer', 'pre_push_evidence_gate', 'prose_standard', 'cot_leakage_trim',
-    'doc_site_projection', 'doc_standards', 'simplification_audit', 'test-driven-development',
-    'idea_to_project', 'offer-helper', 'portfolio-review', 'frontend-ui',
-    'debug-protocol', 'version-collaboration', 'self-verification', 'data-change-safety',
-    'host-runtime-traps',
+    'domain-aios-itself', 'domain-backend', 'domain-data', 'domain-docs',
+    'domain-frontend', 'domain-job-search', 'domain-ops', 'domain-product',
   ]
-  assert.equal(CAP_NAMES.length, 17, '能力名列表必须是 17 个（与本轮前提一致）')
+  assert.equal(CAP_NAMES.length, 8, '能力名列表必须与 capabilities/INDEX.md 的域能力数一致')
   for (const n of CAP_NAMES) {
     assert.equal(FC.CAP_NUDGE_TEXT.includes(n), false, '🔴 提醒文本 ⛔ 不得点名能力：' + n)
   }
