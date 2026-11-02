@@ -1,0 +1,17 @@
+{
+  "// 说明": "AI-OS runtime 类型闸门（2026-11-02 · 独立审计 R2 遗留）。全量 strict 零基线；改完跑 `node scratch/tscheck/node_modules/.bin/tsc -p runtime/tsconfig.json --noEmit` 或 `python tools/probes/_tsc_lint.py`。",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "types": ["node"],
+    "lib": ["ES2022"]
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["tests"]
+}

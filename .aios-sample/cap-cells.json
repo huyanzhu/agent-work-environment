@@ -1,0 +1,7 @@
+{
+  "enabled": false,
+  "max": 1,
+  "form": "intro",
+  "claimHint": "generic",
+  "domainInject": "on"
+}

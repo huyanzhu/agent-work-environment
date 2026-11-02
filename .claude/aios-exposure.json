@@ -1,0 +1,20 @@
+{
+  "_role": "AI-OS 暴露控制配置（Exposure 开关）—— 只存启停，不存事实 / 会话状态 / 幂等依据 / 历史结果",
+  "_discipline": [
+    "默认全关：本文件缺失、损坏或结构非法 ⇒ 全关（fail-closed，并在 stderr 留痕，不静默）",
+    "每次调用重新读取：改本文件即生效，不需要重启",
+    "只有代码白名单（tools/aios-hook.py 的 ACTIONS）里的 action 会被执行；此处多写名字 = 忽略",
+    "注入型动作依赖本机状态目录（.aios/）：状态文件缺失时相关注入不会发生"
+  ],
+  "_enable_order": "建议逐个开启并观察：先开写回型（wrapup_writeback），再按需开注入型；每个注入型开启前先确认它依赖的状态文件已就绪。",
+  "_how_to_enable": "把目标 action 的 enabled 改成 true；只想在特定宿主启用时可加 hosts 数组。字段与默认值见 docs/CONFIGURATION.md。",
+  "actions": {
+    "task_recovery": { "event": "SessionStart", "kind": "inject", "enabled": false },
+    "material_discovery": { "event": "UserPromptSubmit", "kind": "inject", "enabled": false },
+    "field_candidates": { "event": "UserPromptSubmit", "kind": "inject", "enabled": false },
+    "ownership_lost": { "event": "UserPromptSubmit", "kind": "inject", "enabled": false },
+    "r3_notice_start": { "event": "SessionStart", "kind": "inject", "enabled": false },
+    "r3_notice_lost": { "event": "UserPromptSubmit", "kind": "inject", "enabled": false },
+    "wrapup_writeback": { "event": "Stop", "kind": "writeback", "enabled": false }
+  }
+}

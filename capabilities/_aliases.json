@@ -1,0 +1,19 @@
+{
+  "cot_leakage_trim": "domain-docs",
+  "data-change-safety": "domain-data",
+  "debug-protocol": "domain-backend",
+  "doc_site_projection": "domain-docs",
+  "doc_standards": "domain-docs",
+  "frontend-ui": "domain-frontend",
+  "host-runtime-traps": "domain-ops",
+  "idea_to_project": "domain-product",
+  "archived-skill-a": "domain-job-search",
+  "archived-skill-b": "domain-job-search",
+  "pre_push_evidence_gate": "domain-ops",
+  "prose_standard": "domain-docs",
+  "self-verification": "domain-aios-itself",
+  "senior-engineer": "domain-backend",
+  "simplification_audit": "domain-backend",
+  "test-driven-development": "domain-backend",
+  "version-collaboration": "domain-ops"
+}
