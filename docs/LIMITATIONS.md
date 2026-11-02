@@ -20,7 +20,7 @@ python tools/task_card.py states
 #   ✅ 全部卡的 State 均在值域内（missing=0 · off-vocab=0）
 
 python -m unittest discover -s tools/tests -p "test_*.py"
-#   Ran 143 tests · OK
+#   Ran 147 tests · OK
 
 node runtime/tests/activation.test.mjs
 #   合计 208 项 · 通过 207 · 失败 1
@@ -31,7 +31,7 @@ python scratch/_module_graph.py
 #   （本地开发目录；不随发布 —— 发布物里用 tools/probes/_unbound_refs_lint.py 与 _tsc_lint.py 兜底）
 
 python tools/probes/_pitfalls_id_lint.py
-#   条目 112 · 唯一编号 112 · 合计 3 · OK 3 · FAIL 0
+#   条目 111 · 唯一编号 111 · 合计 3 · OK 3 · FAIL 0
 
 python tools/probes/_clone_selftest.py
 #   干净克隆 → 上面四条全绿 → 判定: ✅ 克隆可用（跑完自动清理 worktree）

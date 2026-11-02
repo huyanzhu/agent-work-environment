@@ -55,10 +55,7 @@ Estimated Finish: YYYY-MM-DD / TBD
 
 ---
 
-## 使用的能力（可 none）
-
-> 由脚本填，⛔ 手改无效（`capability` 命令会同时写这里和 `.log`；lint 校验两者一致）。
-> 开工前看 `capabilities/INDEX.md`（8 个域能力 · 一域一文件）；选与你这次改动**同域**的那个。
+## 使用的能力
 
 - 能力: `（未记录）`
 

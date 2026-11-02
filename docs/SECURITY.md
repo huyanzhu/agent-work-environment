@@ -18,13 +18,13 @@
 
 | 场景 | 行为（倒向哪边） | 依据 |
 |---|---|---|
-| `.aios/inject_probe.json` 不存在 | **零注入**（阶段 / 节点 / 提醒全不发生） | `readInjectProbe()` 返回 `null` |
+| `.aios/inject_probe.json` 不存在 | **零注入**（阶段 / 节点 / 提醒全不发生） | `readInjectProbe` 返回 `null` |
 | `enabled` 不是**严格 `true`** | 关 | 同上 |
-| `session` 为空串 / 缺失 / 非法类型 | **不匹配任何会话** | `parseProbeSessions()` → `null` |
+| `session` 为空串 / 缺失 / 非法类型 | **不匹配任何会话** | `parseProbeSessions` → `null` |
 | 开关 JSON 解析失败 | 回落缺省，不抛错 | `readSwitchCached(..., fallback)` |
-| `.aios/phase_inject.json` 不存在 | **开**（唯一"缺省开"的开关，但仍受外层门约束） | `phaseInjectEnabled()` |
+| `.aios/phase_inject.json` 不存在 | **开**（唯一"缺省开"的开关，但仍受外层门约束） | `phaseInjectEnabled` |
 | 卡模板值不认识 | **报错且不落卡**（⛔ 不静默回落） | `task_card.py` |
-| `--project` 越界 / 非法 | **拒绝**（不建卡） | `_project_problem()` |
+| `--project` 越界 / 非法 | **拒绝**（不建卡） | `_project_problem` |
 | 卡名不符合形状 | 不读（正则白名单） | `CARD_NAME_RE` |
 | 工具脚本不在 `tools/` 下 | **退出**（`FAIL-CLOSED`） | `tools/_root_guard.py` |
 | 根不是 AI-OS 结构树 | **退出**（`FAIL-CLOSED`） | 同上 |
@@ -33,8 +33,8 @@
 
 ## 三、路径边界（越界防护）
 
-1. **状态文件路径不接受外部输入**：所有 `.aios/*.json`、探针日志、焦点卡的路径都由**固定常量名**拼 `aiosStateDir()` 得到；`aiosStateDir()` 只会是 `<仓库根>/.aios`（不存在时回落 `<仓库根>/scratch`）。没有任何一处把用户输入拼进路径。
-2. **脚本路径固定目录**：`resolveScript()` 只解析 `tools/probes/`（以及兼容位 `.aios/` / `scratch/`）；`resolveToolScript()` 只解析 `tools/`。机制探针与工具脚本不混用解析函数。
+1. **状态文件路径不接受外部输入**：所有 `.aios/*.json`、探针日志、焦点卡的路径都由**固定常量名**拼 `aiosStateDir` 得到；`aiosStateDir` 只会是 `<仓库根>/.aios`（不存在时回落 `<仓库根>/scratch`）。没有任何一处把用户输入拼进路径。
+2. **脚本路径固定目录**：`resolveScript` 只解析 `tools/probes/`（以及兼容位 `.aios/` / `scratch/`）；`resolveToolScript` 只解析 `tools/`。机制探针与工具脚本不混用解析函数。
 3. **卡名白名单**：读取侧用 `CARD_NAME_RE = /^(?:TASK-\d{8}-\d{3}|T\d{3}-[^.]+)\.md$/` —— 只有这个形状的卡名会被读，`..` 与路径分隔符无法进入。
 4. **项目名当"名字"而不是"路径"**：`--project` 拒绝绝对路径 / 盘符 / UNC、拒绝 `..` 路径段、拒绝路径分隔符与 Windows 非法字符（`<>:"|?*`）与控制字符、拒绝前后空格与尾随点，最后用 `commonpath` 兜底断言仍在 `task_cards/active` 之下。
 5. **工具自带结构断言**：`_root_guard.py` 在任何工具启动时断言"脚本位于 `tools/` 下"且"根目录是 AI-OS 结构树（`AGENTS.md` + `capabilities/INDEX.md` + `domains/patterns`）"，否则立即 `exit` 非零。防止仓库被搬到非 AI-OS 树后**静默读错语料**。
@@ -45,7 +45,7 @@
 - 只注入「路径 + 一句纪律 + `intro`」，不注入全文；摘要按字符上限截断。
 - 注入内容在开关关闭时**只落探针**（宿主上下文零变化）。
 - ⛔ **不落推理原文**：观测插件（`aios-signals.ts`）显式丢弃 `reasoning-delta` / `text-delta` / `argumentsDelta` 的内容，只保留类型、长度与时序。
-- 工具名可记；工具参数只记**脱敏摘要**（`stripRepoPaths()` 去掉本机绝对路径）。
+- 工具名可记；工具参数只记**脱敏摘要**（`stripRepoPaths` 去掉本机绝对路径）。
 
 ## 五、子进程边界
 

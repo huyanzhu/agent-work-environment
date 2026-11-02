@@ -1,6 +1,6 @@
 # maintenance-skills/INDEX.md — 维护能力发现入口（discovery surface）
 
-> 2026-08-23 建立（D-015）。语义：让我知道"有什么维护能力"；**不是完整定义**——需要时打开 Skill 本体。
+> 建立（D-015）。语义：让我知道"有什么维护能力"；**不是完整定义**——需要时打开 Skill 本体。
 > 职责面：Maintenance（AI-OS 基础设施）；**不进普通 task_start**。
 
 ## 一、体检（观察入口 · 单列）
@@ -13,6 +13,6 @@
 
 | Skill | 职责 | 触发 | 状态 | 裁决 |
 |---|---|---|---|---|
-| knowledge-space-maintenance | Knowledge Space + 记录生命周期维护（Consolidation + Integrity + Structure + Index/Discovery + Provenance + **Lifecycle/Archive**） | duplicate/overlap / malformed / incomplete frontmatter / stale-inconsistent index / orphaned / supersession / archive-prune / obsolete-rejection | 已建立（v3 · Lifecycle facet 2026-08-24 Intake #5） | D-013/D-014/D-016/D-022 |
-| experience-family-pipeline | 经验族流水线：**新坑入库五步**（判层 → 写 → sim 余量预检 → 重建索引 → 回归门）+ 显式完成标准 + 回退路径 + 族卡转正/撤族 + 检索改造（失败触发 vs 节点触发）流程 | 新坑/新族/新场景/别名要进库 · 族卡转正或撤族 · 改 runtime 触发面 · 改语料后护栏/探针读数退化 | 已建立（v1 · 2026-11-01 T31 转正） | T31 |
-| capability-fusion | **新能力/新 skill 怎么融合进 8 个域能力**：Q5 闸门 → 归域判据 → 抽象判据（共同动作）→ 片字段规范 → 五步校验 → 反模式 + 伴生文件同步 + 可机械核的完成标准 | 新能力要入库 · 两片职责重叠想合并 · 旧能力名要归并 · 域文件片数变化 | 已建立（v1 · 2026-11-02 域合并同日） | Human 2026-11-02 |
+| knowledge-space-maintenance | Knowledge Space + 记录生命周期维护（Consolidation + Integrity + Structure + Index/Discovery + Provenance + **Lifecycle/Archive**） | duplicate/overlap / malformed / incomplete frontmatter / stale-inconsistent index / orphaned / supersession / archive-prune / obsolete-rejection | 已建立（v3 · Lifecycle facet Intake #5） | D-013/D-014/D-016/D-022 |
+| experience-family-pipeline | 经验族流水线：**新坑入库五步**（判层 → 写 → sim 余量预检 → 重建索引 → 回归门）+ 显式完成标准 + 回退路径 + 族卡转正/撤族 + 检索改造（失败触发 vs 节点触发）流程 | 新坑/新族/新场景/别名要进库 · 族卡转正或撤族 · 改 runtime 触发面 · 改语料后护栏/探针读数退化 | 已建立（v1 · T31 转正） | T31 |
+| capability-fusion | **新能力/新 skill 怎么融合进 8 个域能力**：Q5 闸门 → 归域判据 → 抽象判据（共同动作）→ 片字段规范 → 五步校验 → 反模式 + 伴生文件同步 + 可机械核的完成标准 | 新能力要入库 · 两片职责重叠想合并 · 旧能力名要归并 · 域文件片数变化 | 已建立（v1 · 域合并同日） | |

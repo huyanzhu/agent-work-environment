@@ -4,7 +4,7 @@
 
 用法：
     python tools/probes/_pitfalls_id_lint.py
-    python tools/probes/_pitfalls_id_lint.py --root <repo>/work/_clone/agent-work-environment
+    python tools/probes/_pitfalls_id_lint.py --root <clone 目录>
 
 判据（任一不满足 ⇒ FAIL）：
   1. 同一编号出现两次 ⇒ FAIL（引用会指错）

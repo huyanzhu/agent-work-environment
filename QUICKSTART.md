@@ -44,7 +44,7 @@ python tools/task_card.py states
 # ② 能力库字段校验：应 合计 8 · OK 8 · WARN 0 · FAIL 0
 python tools/probes/_capability_field_lint.py
 
-# ③ tools 测试：应 Ran 143 tests · OK
+# ③ tools 测试：应 Ran 147 tests · OK
 python -m unittest discover -s tools/tests -p "test_*.py"
 
 # ④ runtime 隔离自测：应 合计 208 项 · 通过 207 · 失败 1
@@ -87,7 +87,7 @@ python tools/task_card.py create "我的第一个任务" --project=示例
 # 2) 占卡（排他；被别的会话占着的卡对你不可用）
 python tools/task_card.py claim 示例/TASK-YYYYMMDD-001
 
-# 3) 开工前记能力（单字段；先看 capabilities/INDEX.md 选一个域能力）
+# 3) 开工先调 auto_capability（what 一句）→ 选 8 个领域里的一个，记进卡（单字段）
 python tools/task_card.py capability 示例/TASK-YYYYMMDD-001 \
   --name domain-aios-itself --why "先核状态清单再动手"
 
@@ -125,7 +125,7 @@ python tools/task_card.py release 示例/TASK-YYYYMMDD-001 --state=Completed
 | `ONBOARD.md` | 接入（身份 / 原则 / 收入收工） |
 | `TOOL_RUNTIME.md` | Agent 实际用的工具一行式 + 调用约定 |
 | `capabilities/` | **能力库**：8 个域能力（50 片）+ `INDEX.md` 入口 |
-| `domains/experiences/` | **经验族卡**（12 张）+ 坑清单 `task_cards/memory/PITFALLS.md`（112 条） |
+| `domains/experiences/` | **经验族卡**（12 张）+ 坑清单 `task_cards/memory/PITFALLS.md`（发布版 111 条） |
 | `task_cards/` | **任务卡工作记忆**（`active/<项目>/`）+ 卡模板 |
 | `runtime/` | 本体（插件）：阶段注入 / 节点注入 / 经验召回 / R3 唤醒，15 模块 |
 | `tools/` | 机制：卡系统、校验闸门（`probes/`）、回归门 |

@@ -24,7 +24,7 @@
 | 能力库结构正确 | 8 个域能力 / 50 片；字段 lint 全绿 | `python tools/probes/_capability_field_lint.py` → `合计 8 · OK 8 · WARN 0 · FAIL 0` |
 | INDEX 交叉校验 | 表 8 行 · 文件 8 个 · 问题 0 | 同上（同一次运行输出） |
 | 卡系统可用 | State 全在值域内 | `python tools/task_card.py states` → `missing=0 · off-vocab=0` |
-| 机制测试 | `Ran 143 tests · OK` | `python -m unittest discover -s tools/tests -p "test_*.py"` |
+| 机制测试 | `Ran 147 tests · OK` | `python -m unittest discover -s tools/tests -p "test_*.py"` |
 | Runtime 自测 | `合计 208 项 · 通过 207 · 失败 1`（唯一红 = `S37` 已知红） | `node runtime/tests/activation.test.mjs` |
 | 模块依赖方向 | 反向依赖 0 · 横向依赖 0 | `python scratch/_module_graph.py` |
 | 坑清单编号纪律 | 条目 112 · 唯一编号 112 | `python tools/probes/_pitfalls_id_lint.py` |

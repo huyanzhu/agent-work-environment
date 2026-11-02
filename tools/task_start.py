@@ -372,7 +372,7 @@ def main():
     if not qtokens:
         print("\n（进行时的材料发现**未触发**：本视图无任务描述。")
         print("  runtime 路径由 R4 在 `UserPromptSubmit` 上做；人工检索可加任务描述重跑，")
-        print("  或 `python tools/experience_push.py \"<描述>\"`；能力全表见 `capabilities/INDEX.md`。）")
+        print("  或 `python tools/experience_push.py \"<描述>\"`；能力入口 = 调 `auto_capability`（`what` 一句）⇒ 8 个领域词表。）")
         _emit_selfcheck()
         return 0
 
@@ -383,7 +383,7 @@ def main():
     else:
         print("  （无候选命中 —— **空结果即信号**，不硬凑候选）")
         print("  下一步: 换更具体的任务描述重跑；或 `python tools/experience_push.py \"<描述>\"` 手工检索全文；")
-        print("         能力全表 `capabilities/INDEX.md`；真实踩坑/信念改变才沉淀 Observation，不硬写。")
+        print("         能力入口 = `auto_capability`（what 一句 ⇒ 8 个领域词表）；真实踩坑/信念改变才沉淀 Observation，不硬写。")
 
     print("\n来源与消费语义：任务卡=恢复/继续；知识=读/采纳；能力=使用/装配。")
     _emit_selfcheck()

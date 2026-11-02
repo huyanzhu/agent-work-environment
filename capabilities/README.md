@@ -1,7 +1,7 @@
 # capabilities/ — Capability Space（可装配能力空间 · 域合并后）
 
 > 与 domains/（知识）并列的第二种消费空间。
-> **结构**：**一个领域一个文件** ⇒ 本目录现为 **8 个域能力（50 片）**；**领域是唯一分类轴**，片不含 `class`（也不要求 `phases`）；旧 17 个能力文件与格装配表 `capabilities/_archive/CELLS.md` 已归档到 `capabilities/_archive/`（⛔ 只读、不再改），旧能力名经 `capabilities/_aliases.json` 映射到域能力（历史账本仍有效）。
+> **结构**：**一个领域一个文件** ⇒ 本目录现为 **8 个域能力（50 片）**；**领域是唯一分类轴**，片不含 `class`（也不要求 `phases`）；旧 8 个域能力文件与格装配表 `capabilities/_archive/CELLS.md` 已归档到 `capabilities/_archive/`（⛔ 只读、不再改），旧能力名经 `capabilities/_aliases.json` 映射到域能力（历史账本仍有效）。
 
 ## 这里放什么
 

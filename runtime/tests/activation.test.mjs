@@ -2269,10 +2269,13 @@ check('S111 两步式选词：axes 只收词表值 · 词表文本 · timeout 15
   // ② 不带 axes ⇒ 空轴（旧调用行为不变）
   const r2 = FC.buildWorkReport('selftest-s111', { what: 'x', confirmed: 'user' }, now)
   assert.deepEqual(r2.rep.axes, { domain: [], help: [], concern: [] })
-  // ③ 词表文本含三维值（供 Agent 选）
+  // ③ 词表文本 = **8 个领域**（供 Agent 选），不再回三维表
   const vt = FC.vocabText()
-  for (const v of ['前端', '实现', '正确性']) assert.ok(vt.includes(v), '词表缺值：' + v)
-  assert.ok(vt.includes('axes'), '词表文本必须告诉 Agent 下一步怎么提交')
+  for (const v of ['前端', '后端', '数据', '文档', '产品', '环境·运维', '求职·职业', 'AI-OS 自身']) {
+    assert.ok(vt.includes(v), '领域词表缺：' + v)
+  }
+  assert.ok(vt.includes('domain-'), '词表必须给出域能力名（domain-xxx）')
+  assert.ok(vt.includes('能力') && vt.includes('capability'), '词表必须告诉 Agent：写进卡上「能力」字段')
   // ④ timeout 收紧到 1500（Human 裁定）· stage4 关闭（代码保留可回退）
   assert.equal(FC.WORK_REPORT_RETRIEVAL_TIMEOUT_MS, 1500)
   assert.equal(FC.STAGE4_ENABLED, false, 'stage4 已按 Human 裁定关闭')
@@ -4395,8 +4398,8 @@ checkAsync('S181 nudge:"on" + 缺收尾 ⇒ S4 提醒 1 次（开工/实现已�
   }
 })
 
-check('S182 提醒文本**不含任何** 17 个能力名（能力名列表断言 · 正文逐字固定）', () => {
-  // 17 个能力名来源：`capabilities/INDEX.md` 17 行（2026-11-01 现状）。
+check('S182 提醒文本**不含任何** 8 个域能力名（能力名列表断言 · 正文逐字固定）', () => {
+  // 来源：`capabilities/INDEX.md` 的 8 个域能力。
   const CAP_NAMES = [
     'domain-aios-itself', 'domain-backend', 'domain-data', 'domain-docs',
     'domain-frontend', 'domain-job-search', 'domain-ops', 'domain-product',

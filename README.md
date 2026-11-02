@@ -67,7 +67,7 @@ cp -r .aios-sample .aios      # 首次使用必做：Windows 用 xcopy /E /I .ai
 ```bash
 python tools/task_card.py states                          # 卡系统：打印 State 校验结果
 python tools/probes/_capability_field_lint.py             # 能力库：合计 8 · OK 8
-python -m unittest discover -s tools/tests -p "test_*.py" # 应：Ran 143 tests · OK
+python -m unittest discover -s tools/tests -p "test_*.py" # 应：Ran 147 tests · OK
 node runtime/tests/activation.test.mjs                    # 应：合计 208 项 · 通过 207 · 失败 1
 ```
 
@@ -102,7 +102,7 @@ Runtime 的分层、模块依赖图与硬规则见 [docs/ARCHITECTURE.md](docs/A
 |---|---|---|
 | 工作记忆（任务卡） | ✅ 机制跑通 | 9 态 `State`、`claim`/`release` 排他占用、`.log` 外置留痕、`takeover` 接管 |
 | 开工发现（`tools/task_start.py`） | ✅ 只读、按输入分级 | 无参 = 任务恢复；带任务描述 = 材料发现 |
-| 能力库 / 经验库 | ✅ 结构可机械校验 | 8 域 50 片 · 12 张经验族卡 · 112 条坑清单；5 个闸门可跑 |
+| 能力库 / 经验库 | ✅ 结构可机械校验 | 8 域 50 片 · 12 张经验族卡 · 111 条坑清单；5 个闸门可跑 |
 | 阶段注入判对域 | ✅ 机制可复核 | 声明驱动注入；无声明不注入（设计，不是故障） |
 | 投递是否提升产出 | 🟡 未验证 | 判对域 ≠ 产出更好；对照实验样本量小 |
 | 自动发现 / 首拍注入 | ❌ 关闭 | 开关关，代码保留 |
@@ -127,7 +127,7 @@ Runtime 的分层、模块依赖图与硬规则见 [docs/ARCHITECTURE.md](docs/A
 
 1. 读 `AGENTS.md`（身份 / 硬约束 / 设计规则 / 证据纪律）
 2. 读 `TOOL_RUNTIME.md`（工具：是什么、什么时候用）
-3. 开工前跑 `python tools/task_start.py`（任务恢复；带任务描述才做经验 / 能力发现）
+3. 开工时调一次 `auto_capability`（`what` 一句即可）→ 拿 **8 个领域词表**，选一个写进卡「能力」字段；需要恢复上下文再跑 `python tools/task_start.py`
 4. 动手前占卡：`python tools/task_card.py claim <项目>/<TASK-ID>`
 
 ## License

@@ -35,18 +35,18 @@ cp -r .aios-sample .aios
 > 这 5 份是 `.aios-sample/` 里的样本；复制后放在 `.aios/`。**样本值是演示值，不是全部保守缺省** ——
 > 每份的代码缺省以下表为准。
 
-| 文件 | 作用 | 缺省（文件缺失 / 非法） | 怎么改 | 改后要重启吗 |
-|---|---|---|---|---|
-| `inject_probe.json` | 事件提示注入；**阶段注入的外层门**（也参与节点提示 / 提醒的早退判断） | **关**（`readInjectProbe()` 返回 null） | `{"enabled": true, "session": "*"}`；要子会话也收加 `"allowSubagent": true` | 否 |
-| `phase_inject.json` | 阶段注入总开关（S1 占卡后 / S2 首次改动 / S4 收口） | **开**（`AIOS_PHASE_INJECT=off` 可强制关） | `{"enabled": false}` 关闭；删除文件或写 `true` 打开 | 否 |
-| `experience_recall.json` | 失败签名触发的经验召回 + 节点提示 | **关** | `{"enabled": true}` 打开 | 否 |
-| `r3-wake.json` | R3 空闲唤醒（卡被 takeover 后自动拉起维护） | **关**（只认严格 `true`） | `{"enabled": true}` 打开；建议先确认你确实需要空闲会话被自动拉起 | 否 |
-| `cap-cells.json` | 阶段候选上限 · claim 提示 · 声明驱动的域注入 | `max=1` · `claimHint=off` · `domainInject=off` | 见 §1.5；`enabled` / `form` 是惰性字段（无消费者） | 否 |
+| 文件 | 作用 | 代码缺省（文件缺失/非法） | `.aios-sample` 推荐值 | 怎么改 | 改后要重启吗 |
+|---|---|---|---|---|---|
+| `inject_probe.json` | 事件提示注入；**阶段注入的外层门**（也参与节点提示 / 提醒的早退判断） | **关**（`readInjectProbe` 返回 null） | `{"enabled": true, "session": "*", "allowSubagent": true}` | `{"enabled": true, "session": "*"}`；要子会话也收加 `"allowSubagent": true` | 否 |
+| `phase_inject.json` | 阶段注入总开关（S1 占卡后 / S2 首次改动 / S4 收口） | **开**（`AIOS_PHASE_INJECT=off` 可强制关） | `{"enabled": true}` | `{"enabled": false}` 关闭；删除文件或写 `true` 打开 | 否 |
+| `experience_recall.json` | 失败签名触发的经验召回 + 节点提示 | **关** | `{"enabled": true}`（推荐开） | `{"enabled": true}` 打开 | 否 |
+| `r3-wake.json` | R3 空闲唤醒（卡被 takeover 后自动拉起维护） | **关**（只认严格 `true`） | `{"enabled": false}`（需要时手动开） | `{"enabled": true}` 打开；建议先确认你确实需要空闲会话被自动拉起 | 否 |
+| `cap-cells.json` | 阶段候选上限 · claim 提示 · 声明驱动的域注入 | `max=1` · `claimHint=off` · `domainInject=off` | `claimHint=generic` · `domainInject=on` | 见 §1.5；`enabled` / `form` 是惰性字段（无消费者） | 否 |
 
 ### 1.1 `inject_probe.json` —— 注入外层门
 
 ```json
-{"enabled": true, "session": "*", "allowSubagent": false}
+{"enabled": true, "session": "*", "allowSubagent": true}
 ```
 
 - `session` **必须存在**：`"*"` = 本机所有会话；也可写具体会话匹配串。只写 `enabled:true` 而没有 `session`

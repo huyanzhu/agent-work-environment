@@ -23,7 +23,7 @@
 - 指向**本发布物内**文件的指针，你 clone 下来就能核对。
 - 指向**作者侧实验**的结论（对照实验、真实任务观测），本发布物里**无法复跑** ⇒ 一律按 🟡 读，⛔ 不要当成已实现。
 - 本发布物内可自行复核的东西：`capabilities/`（8 域 50 片）· `domains/experiences/`（12 张族卡）·
-  `task_cards/memory/PITFALLS.md`（112 条）· `tools/`（卡系统 / 校验闸门 / 回归门）· `runtime/`（本体）。
+  `task_cards/memory/PITFALLS.md`（111 条）· `tools/`（卡系统 / 校验闸门 / 回归门）· `runtime/`（本体）。
 
 ## 一句话结论
 

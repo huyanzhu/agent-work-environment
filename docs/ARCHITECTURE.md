@@ -27,7 +27,7 @@
             ▼
 ┌──────────────────────────────────────────────────────────────┐
 │ 语料层：capabilities/（8 域 50 片） · domains/experiences/（12 张族卡）│
-│         task_cards/memory/PITFALLS.md（112 条坑）              │
+│         task_cards/memory/PITFALLS.md（发布版 111 条）              │
 └──────────────────────────────────────────────────────────────┘
 ┌──────────────────────────────────────────────────────────────┐
 │ 记忆层：task_cards/active（工作记忆） · task_cards/memory（全局）│
@@ -92,11 +92,9 @@ L3  delivery/probe-state         → probe · phase-policy · phase-candidates �
 3. ⛔ **可变 `let` 不跨模块直接赋值** —— 用 setter（ESM 只读绑定会抛错，且常被 `catch` 吞掉）。
 4. **类型 import 必须 `import type`** —— 类型在 Node 擦除后不是值导出。
 
-校验命令（前两条在本地开发目录 `scratch/`，不随发布；后两条在 `tools/probes/` 内、随发布）：
+架构校验命令（都在 `tools/probes/` 内、随发布）：
 
 ```bash
-python scratch/_module_graph.py    # 应：反向依赖 0 · 横向依赖 0
-python scratch/_cycle_check.py     # 应：只有 session-state ↔ work-context 的 type 环
 python tools/probes/_unbound_refs_lint.py
 python tools/probes/_tsc_lint.py
 ```

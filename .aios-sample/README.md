@@ -11,6 +11,9 @@ cp -r .aios-sample .aios          # Windows: xcopy /E /I .aios-sample .aios
 
 然后**重启宿主**（插件在启动时装载）。
 
+> `.aios-sample/` 里的值是**推荐开启集**（不是代码缺省）；代码缺省一律 fail-closed：
+> `.aios/` 缺失 ⇒ **零注入**；某份文件缺失 ⇒ 该开关按关处理。
+
 ## 首次启动的唯一口径
 
 1. **`.aios/` 缺失 ⇒ `inject_probe.json` 不存在 ⇒ 外层注入门关**：阶段注入、节点注入、提醒**都不发生**（零注入）。
@@ -25,8 +28,8 @@ cp -r .aios-sample .aios          # Windows: xcopy /E /I .aios-sample .aios
 |---|---|---|
 | `inject_probe.json` | **注入总闸**（阶段注入 / 节点注入 / 提醒的外层门） | `{"enabled":true,"session":"*","allowSubagent":true}` |
 | `phase_inject.json` | 阶段注入（S1 占卡后 / S2 首次改动 / S4 收口） | `{"enabled":true}` |
-| `cap-cells.json` | 域能力注入；`domainInject:"on"` = 跟随卡上声明 | `{"enabled":false,"max":1,"form":"intro","claimHint":"generic","domainInject":"on"}` |
-| `experience_recall.json` | 失败后经验召回；**同时是节点注入（N1/N2/N3）的门** | `{"enabled":true}` |
+| `cap-cells.json` | 域能力注入；`domainInject:"on"` = 跟随卡上声明（⛔ 不猜域） | `{"enabled":false,"max":1,"form":"intro","claimHint":"generic","domainInject":"on"}` |
+| `experience_recall.json` | 失败后经验召回；**同时是节点注入（N1/N2/N3）的门** | `{"enabled": true}`（推荐开；代码缺省关） |
 | `r3-wake.json` | R3 收工维护唤醒（fire-once） | `{"enabled":false}`（默认关，需要时再开） |
 
 > `inject_probe.json` **必须带 `session`**（`"*"` = 本机所有会话）——只写 `{"enabled":true}` 会让**整块注入静默失效**。

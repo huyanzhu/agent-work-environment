@@ -20,12 +20,12 @@ AI-OS 是 Agent 的操作平台：通过**可验证**的辅助能力，降低 Ag
 4. **约定层**：轻量、可及、agent 可读（AGENTS.md 形态）；厚架构文档降为按需参考（K-032/034）。
 5. **不做**：不建 telemetry（引用=足迹协议）；不投入"主动性引导"条款（K-031 限定）；不因"像 OS"建结构。
 
-## 表达（用户 2026-10-15 立）
+## 表达（用户立）
 **推理链（thinking）与回话一律用中文**，除非用户当轮明确另指定语言；判据名 / 字段名 / 代码标识
 （如 `stage4`、`probe-session`、`shadow-dispatch{why}`）保留原文，⛔ 不译。
 
 ## Bootstrap
-每轮开工：先做**统一开工发现**——① `task_cards/active` 恢复上下文 ② 检索相关经验 ③ `capabilities/INDEX.md` 找可装配能力（`tools/task_start.py` 可一键完成，见 TOOL_RUNTIME）；建卡/归档用 `tools/task_card.py`；手动知识检索仍可用 `tools/experience_push.py`。
+每轮开工：先做**统一开工发现**——① `task_cards/active` 恢复上下文 ② 调一次 `auto_capability`（`what` 写一句在做什么）⇒ 它返回 **8 个领域词表**，选一个写进卡上「能力」字段 ③ 需要经验时照候选打开对应文件（`capabilities/INDEX.md` 只是目录，不是入口动作）。建卡/归档用 `tools/task_card.py`；任务恢复可用 `tools/task_start.py`；手动知识检索用 `tools/experience_push.py`。
 
 ## 证据纪律
 引用结论前查 provenance（CLEAN≠对、方向性≠验证、单批次=未验证）；原始证据存于本地研究档案，本环境只带结论与指针，不复制过程账本。

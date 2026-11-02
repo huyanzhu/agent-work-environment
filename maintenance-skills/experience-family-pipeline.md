@@ -1,9 +1,9 @@
-# 经验族流水线 · 操作手册（正式版 v1 · 2026-11-01 T31 转正）
+# 经验族流水线 · 操作手册（正式版 v1 · T31 转正）
 
 > 状态：**已转正** —— 登记于 `maintenance-skills/INDEX.md`「二、维修」（裁决 `T31`）。原草案 `experience-family-pipeline.draft.md` 已改为**指针页**保留（不删）。
 > 用途：把「**一个新坑怎么进库**、经验族怎么建/转正/撤、检索怎么改、回归门怎么跑、判据与纪律」写成一页可照做的东西。
-> 写作口径：**只写实测过的**。命令列标 ✅ = 本手册作者亲自跑过（2026-11-01 06:3x–06:4x）；⚠️ = 本手册作者**没跑**（含被前置条件/写域约束拦住的），⛔ 不把 ⚠️ 当已验证。
-> 建立依据：2026-10-31–11-01 六族 + 自检族全过程（权限 / 编码 / 推送 / 任务卡（已撤）/ 工具 / Runtime / 自检与判据），含踩过的坑。
+> 写作口径：**只写实测过的**。命令列标 ✅ = 本手册作者亲自跑过；⚠️ = 本手册作者**没跑**（含被前置条件/写域约束拦住的），⛔ 不把 ⚠️ 当已验证。
+> 建立依据：–11-01 六族 + 自检族全过程（权限 / 编码 / 推送 / 任务卡（已撤）/ 工具 / Runtime / 自检与判据），含踩过的坑。
 > **零运行时影响**：`tools/experience_push.py:56-62` 的 `SOURCES` 只覆盖 `domains/` 与 `task_cards/` ⇒ `maintenance-skills/` **不进检索语料**（✅ 已核代码）。
 
 ---
@@ -18,14 +18,14 @@ $env:PYTHONIOENCODING='utf-8'                                # 中文输出不�
 | 想做什么 | 跑什么 | 通过判据 | 跑过? |
 |---|---|---|---|
 | 语料变更后的**护栏** | `& $py scratch/_guard_now.py` | 混合 paraphrase **8/8·7/8·7/8**；N=30 top3 **≥14**、误报 **≤10** | ✅（exit 0 才算 PASS） |
-| 族级 出现/漏/误报 | `& $py tools/probes/_scene_probe.py` | 期望集**同代**后：族级 top1/漏/误报不劣于基线 | ✅（2026-11-02 **已转正**：两个不同 cwd 复跑读数**逐行一致**；会写快照，见 §2.5） |
+| 族级 出现/漏/误报 | `& $py tools/probes/_scene_probe.py` | 期望集**同代**后：族级 top1/漏/误报不劣于基线 | ✅ |
 | 族卡 A/B（替换形态） | `$env:AB_ONLY="<族名>"; & $py scratch/_ab_families.py` | 预注册 7 判据全 PASS | ⚠️ |
 | 新条目**纯向量余量** | `& $py scratch/_new_entry_margin.py "<title 子串>"` | 无 query 在 `lex<6` 下 `sim≥0.55`；余量 <0.02 = 擦线改措辞 | ✅ |
-| 族声明覆盖审计 | `& $py scratch/_family_coverage_2026-11-01.py` | 认领清单与缺口清单与预期一致 | ✅（只读） |
+| 族声明覆盖审计 | `& $py scratch/_family_coverage_.py` | 认领清单与缺口清单与预期一致 | ✅（只读） |
 | PITFALLS 表结构 | `& $py scratch/_pitfalls_lint.py` | **BAD rows: 0** | ✅ |
 | N=30 误报是哪条 | `& $py scratch/_n30_fp_now.py` | 逐条 top1 列表 | ⚠️ |
-| 误报消融归因 | `& $py scratch/_fp_ablation_2026-11-01.py` | A/B/C/D 四组 fp 计数 | ⚠️（脚本写死本批 P76–P88） |
-| 候选措辞向量试算 | `& $py scratch/_p84_reword_2026-11-01.py` | 候选 sim 列表（⛔ 不重建索引） | ⚠️ |
+| 误报消融归因 | `& $py scratch/_fp_ablation_.py` | A/B/C/D 四组 fp 计数 | ⚠️（脚本写死本批 P76–P88） |
+| 候选措辞向量试算 | `& $py scratch/_p84_reword_.py` | 候选 sim 列表（⛔ 不重建索引） | ⚠️ |
 | 改完 runtime 自测 | `node runtime/tests/activation.test.mjs` | **139/138/1**（S37 是已知红；⚠️ 读数取自原草案，本手册作者**未复核**） | ⚠️ |
 | 改完任务卡工具 | `python -m unittest discover -s tools/tests -p "test_task_card.py"` | **8/8 OK**（⚠️ 同上，读数未复核） | ⚠️ |
 | 查探针事件 | `python scratch/_probe_event.py <ev>` · `python scratch/_probe_recall_report.py --replay` | — | ⚠️ |
@@ -44,7 +44,7 @@ $env:PYTHONIOENCODING='utf-8'                                # 中文输出不�
 | **坑台账** | `task_cards/memory/PITFALLS.md`（分章表格，P 号唯一） |
 | **离线索引** | `scratch/semantic-index/experience-corpus-v1.{json,npy}`（含语料指纹；语料变了必须重建） |
 | **探针日志** | `.aios/_aios-activation.probe.log`（逐行 JSON；搜 `'"ev":"apply"'` 要**带引号**，裸 `ev=apply` 恒 0 条 · P53） |
-| **护栏 / 探针 / A/B / 审计脚本** | ✅ 已转正：`tools/probes/_scene_probe.py` · `tools/probes/semantic_search.py`；仍在 scratch：`scratch/_guard_now.py` · `_ab_families.py` · `_new_entry_margin.py` · `_family_coverage_2026-11-01.py` · `_pitfalls_lint.py` · `_n30_fp_now.py` · `_fp_ablation_2026-11-01.py` |
+| **护栏 / 探针 / A/B / 审计脚本** | ✅ 已转正：`tools/probes/_scene_probe.py` · `tools/probes/semantic_search.py`；仍在 scratch：`scratch/_guard_now.py` · `_ab_families.py` · `_new_entry_margin.py` · `_family_coverage_.py` · `_pitfalls_lint.py` · `_n30_fp_now.py` · `_fp_ablation_.py` |
 | **runtime** | `runtime/aios-activation.ts`（触发面 `recallTriggerOf` / 节点注入段 / `POLICY`） |
 | **单测** | `runtime/tests/activation.test.mjs` · `tools/tests/test_task_card.py` |
 | **读数账本** | `（作者私有工作记忆，未随发布）`（§十二/§十三 = 本手册判据基线的出处） |
@@ -60,7 +60,7 @@ $env:PYTHONIOENCODING='utf-8'                                # 中文输出不�
 
 | 形态 | 什么时候进这一层 | 位置 | 被哪个通道读到 |
 |---|---|---|---|
-| **族卡**（`kind=experience`） | 同一问题域 **+** 同一解法（"同解融合"），且有 ≥2 个不同触发说法；遇到要照做的一整套做法 | `domains/experiences/<x>_family.md` | **只词面**（= 运行时 v49 实际召回）。⛔ **不进混合通道**（见 §2.0.1） |
+| **族卡**（`kind=experience`） | 同一问题域 **+** 同一解法（"同解融合"），且有 ≥2 个不同触发说法；遇到要照做的一整套做法 | `domains/experiences/<x>_family.md` | **只词面**（= 运行时  实际召回）。⛔ **不进混合通道**（见 §2.0.1） |
 | **PITFALLS 条目** | 单点坑、**会再犯**、没有同解 | `task_cards/memory/PITFALLS.md` 对应章 | 词面 **+** 混合（`pitfall` 是混合候选源） |
 | **digest 行** | 要"**遇到就照做**"的**一句话** + 指针（短的那一侧） | `domains/experiences/inject_digests.md` | 词面 **+** 混合（`digest` 是混合候选源） |
 
@@ -79,12 +79,12 @@ $env:PYTHONIOENCODING='utf-8'                                # 中文输出不�
 
 ```powershell
 # 看现有族各自认领了哪些坑、哪些坑无族（缺口清单）
-& $py scratch/_family_coverage_2026-11-01.py        # ✅ 只读，本手册跑过
+& $py scratch/_family_coverage_.py        # ✅ 只读，本手册跑过
 # 看某个候选属于哪族：直接查族卡的采集字段（alias/keywords 是"说法"入口）
 Select-String -Path domains/experiences/*_family.md -Pattern '<候选关键词>'
 ```
 
-判层用的覆盖审计**只解析结构化位置**：`**覆盖的坑（成员声明）**：…` 这一行，并在 `（共` 处截断（`_family_coverage_2026-11-01.py:32,68`）。⛔ **不许 grep 全卡 P 号** —— 会把「口径说明」里明确写"不归本族"的 P 算成认领（本批踩了 **2 次**：工具族被算成 13 条，实际 6 条；修完后新族又被算成 16 条）。
+判层用的覆盖审计**只解析结构化位置**：`**覆盖的坑（成员声明）**：…` 这一行，并在 `（共` 处截断（`_family_coverage_.py:32,68`）。⛔ **不许 grep 全卡 P 号** —— 会把「口径说明」里明确写"不归本族"的 P 算成认领（本批踩了 **2 次**：工具族被算成 13 条，实际 6 条；修完后新族又被算成 16 条）。
 
 ### 2.2 ② 写 —— 格式与硬纪律
 
@@ -137,7 +137,7 @@ alias: <一句话症状 —— 最吃劲的一行：写"我看到的现象"。
 **为什么有这一步**：实测一个新条目 `sim=0.5543` 只超纯向量阈值 `0.55` **0.0043**，就翻了一条 N=30 误报（10 → 11 ⇒ 护栏 FAIL）。靠"看起来不相干"判断没用，必须算。
 
 **分两段做**：
-1. **落盘前 —— 候选措辞试算（不重建索引）**：用 `scratch/_p84_reword_2026-11-01.py` 那类一次性脚本，改**内存 corpus** 再算 sim。实测：候选 2 `sim=0.5149` vs 现行 `0.5377` ⇒ 选 0.5149 那版。（⚠️ 该脚本写死 P84，跨批要改。）
+1. **落盘前 —— 候选措辞试算（不重建索引）**：用 `scratch/_p84_reword_.py` 那类一次性脚本，改**内存 corpus** 再算 sim。实测：候选 2 `sim=0.5149` vs 现行 `0.5377` ⇒ 选 0.5149 那版。（⚠️ 该脚本写死 P84，跨批要改。）
 2. **落盘 + 重建索引后 —— 逐条复核**：
 
 ```powershell
@@ -157,7 +157,7 @@ alias: <一句话症状 —— 最吃劲的一行：写"我看到的现象"。
 - 语料一变索引就 **stale**，`load_index` **直接抛错不静默**（设计如此）：报 `index stale: 语料指纹 X != 索引 Y ⇒ 重跑 build`。本手册作者实测过一次这个报错（语料 fp `214fa897…` vs 索引 fp `cabaf522…`）。
 - 记下**新指纹**并写进当批读数文档；指纹 = `id + embed_text` 的 sha1（`corpus_fingerprint`）⇒ 可逐字节核对"是否回到上一版"。
 
-### 2.4.1 无 fastembed / 索引不可重建时（2026-11-02 实测）
+### 2.4.1 无 fastembed / 索引不可重建时
 
 **先核一件事：是不是解释器选错。** `build` / `query` 都强依赖 fastembed；本机
 `python`（`<python>`）**没有**，而 `<外部项目>\.venv\Scripts\python.exe`
@@ -165,8 +165,8 @@ alias: <一句话症状 —— 最吃劲的一行：写"我看到的现象"。
 
 ```powershell
 $venv = '<外部项目>\.venv\Scripts\python.exe'
-& $venv tools/probes/semantic_search.py build   # 实测 1159 条 · fp a56e94e8 · 50.03s（2026-11-02 01:17，零安装）
-                                              # 转正后复跑：1170 条 · fp 011c6211 · 39.64s（2026-11-02 02:13）
+& $venv tools/probes/semantic_search.py build   # 实测 1159 条 · fp a56e94e8 · 50.03s
+                                              # 转正后复跑：1170 条 · fp 011c6211 · 39.64s
 ```
 
 - `index stale` 常不是故障：语料变了（含**别的会话**追加 PITFALLS）⇒ 重跑 `build`；**fp 与 count 必须一起记**。
@@ -179,13 +179,13 @@ $venv = '<外部项目>\.venv\Scripts\python.exe'
 |---|---|
 | 单条召回（运行时同款） | `python tools/experience_push.py "<失败原文或口语>" -n 5` |
 | 结构化（给脚本） | `'{"query":"…","n":5,"min":4.0}' \| python tools/experience_push.py --stdin-json` |
-| 纯函数自检（无模型） | `python tools/probes/semantic_search.py selftest` → `23 checks OK` · corpus=1170（2026-11-02） |
+| 纯函数自检（无模型） | `python tools/probes/semantic_search.py selftest` → `23 checks OK` · corpus=1170 |
 
 - 边界（P74）：词面只验「**能否召回**」；原词/换词可验，**语义档不可**当判据。
-- `tools/probes/_scene_probe.py` 当前**跑不了**词面半：`main()` 在 L350 先 `load_index`、L351 建 `Embedder`
+- `tools/probes/_scene_probe.py` 当前**跑不了**词面半：`main` 在 L350 先 `load_index`、L351 建 `Embedder`
   ⇒ 词面那半被混合通道的前置条件绑死（**无** `--lexical-only`）。无 fastembed 时改用上表逐条验，
   或按 §2.5 记「探针未跑」；⛔ 别为了让探针过而放宽指纹。
-- 实测读数（P92/P93 三档召回 / 场景探针合计 / 未验项）：`scratch/VERIFY-WITHOUT-FASTEMBED-2026-11-02.md`。
+- 实测读数（P92/P93 三档召回 / 场景探针合计 / 未验项）：`scratch/VERIFY-WITHOUT-FASTEMBED-.md`。
 
 ### 2.5 ⑤ 回归门（护栏 + 场景探针 + 覆盖审计 + 余量）
 
@@ -194,7 +194,7 @@ $venv = '<外部项目>\.venv\Scripts\python.exe'
 ```powershell
 & $py scratch/_guard_now.py                    # ✅ 护栏
 & $py tools/probes/_scene_probe.py              # ⚠️ 写快照；--check 也是先比旧快照再覆盖写
-& $py scratch/_family_coverage_2026-11-01.py   # ✅ 覆盖审计
+& $py scratch/_family_coverage_.py   # ✅ 覆盖审计
 & $py scratch/_pitfalls_lint.py                # ✅ 表结构
 ```
 
@@ -230,7 +230,7 @@ $venv = '<外部项目>\.venv\Scripts\python.exe'
 **顺序铁律：先疑脚本 → 再疑期望集 → 最后才疑语料。** （P86：护栏脚本只把 `kind/title` 喂相关性判定 ⇒ 读数 `8/7/7 · 13/14/10` 掉成 `8/5/5 · 6/9/17`，据此**误回滚了一版正确的族卡**。）
 
 1. **脚本自检**：拿已知基线语料先复现基线读数；复现不了 = 脚本的锅，别动语料。
-2. **消融归因**（定位"谁翻的"）：`scratch/_fp_ablation_2026-11-01.py` —— **索引不动（向量按 id 取），只换参与打分的 corpus**。实测四组：`A 全量 fp=11` / `B 去本批新增 P76–P88 fp=10`（与基线逐项吻合，方法自证）/ `C 去该族单元 fp=11` / `D 两者都去 fp=10` ⇒ 元凶是**本批新增条目**，不是族收敛。⚠️ 该脚本写死本批 P 号与 1150 语料，跨批要改。
+2. **消融归因**（定位"谁翻的"）：`scratch/_fp_ablation_.py` —— **索引不动（向量按 id 取），只换参与打分的 corpus**。实测四组：`A 全量 fp=11` / `B 去本批新增 P76–P88 fp=10`（与基线逐项吻合，方法自证）/ `C 去该族单元 fp=11` / `D 两者都去 fp=10` ⇒ 元凶是**本批新增条目**，不是族收敛。⚠️ 该脚本写死本批 P 号与 1150 语料，跨批要改。
 3. **只回退那一条**：实测对 P84 的做法是**砍掉泛化叙述、只留标识符**（`knownCardKeys` / `cardKeyOfId` / `taskId` / `.log`）⇒ 误报 11 → 10、护栏全绿。⛔ **不整批回滚**；⛔ **不动阈值/融合参数**（T18：动阈值前必须重新标定）。
 4. **撤族**（族冗余 / 实测负收益）：
    - 删族卡 + 删它的 digest 行（若有）；
@@ -255,11 +255,11 @@ $venv = '<外部项目>\.venv\Scripts\python.exe'
 
 ### 3.1 单元 = 族；x 编码
 - 族卡内每个 `**做法 X · …**` 单元 = 一条可检索单元；**x 编码** = 大场景标题 + 具体锚点（每锚点一条向量，单元相似度取 **max**）。整卡单向量会被稀释（本线早期 A/B 实测覆盖 `0.528` vs 分段 `0.689`）。
-- ⚠️ **正式流水线只支持"一条语料 = 一个 passage 向量"**（`build_corpus` → `embed_passages`）⇒ x 编码多向量的优势**只在离线 A/B（B2）里拿得到**，进不了运行时。
+- ⚠️ **正式流水线只支持"一条语料 = 一个 passage 向量"**（`build_corpus` → `embed_passages`）⇒ x 编码多向量的优势**只在离线 A/B里拿得到**，进不了运行时。
 
 ### 3.2 七判据（**先写后跑**，⛔ 不改判据迁就结果）
 `_ab_families.py` 头部预注册，一字未改：
-`B2 top1 ≥ A` · `B2 top3 ≥ A` · `B2 漏 ≤ A` · `B2 误报 ≤ A` · `paraphrase 不降` · `N=30 误报不升` · `N=30 top3 不降`。
+` top1 ≥ A` · ` top3 ≥ A` · ` 漏 ≤ A` · ` 误报 ≤ A` · `paraphrase 不降` · `N=30 误报不升` · `N=30 top3 不降`。
 
 ### 3.3 替换形态 ≠ 加卡形态
 A/B 的**替换形态**结论**不能预测**加卡形态（任务卡族实测：替换 FAIL → 加卡 PASS）⇒ **每次转正必须实测护栏**，⛔ 不搬 A/B 数字。
@@ -292,17 +292,17 @@ A/B 的**替换形态**结论**不能预测**加卡形态（任务卡族实测�
 | 层 | 位置 | 形态 |
 |---|---|---|
 | **失败触发** | `recallTriggerOf(result, toolName)` | 返回 `permission-error` / `exec-permission-error` / `exec-encoding-error` / `unknown-tool` / `knowledge-error` |
-| **节点触发** | post-execute 注入段 | `v49m` 推送/发布节点（只盯 `git push` / `gh pr create` / `npm publish` 这类**动作**）· `v49q` 改本体节点（只盯**编辑 `runtime/*.ts`**）· `v50` claim 后接手检查（**卡事件**触发，注入给前一个"不同会话"的占用者） |
+| **节点触发** | post-execute 注入段 | `` 推送/发布节点（只盯 `git push` / `gh pr create` / `npm publish` 这类**动作**）· `` 改本体节点（只盯**编辑 `runtime/*.ts`**）· `` claim 后接手检查（**卡事件**触发，注入给前一个"不同会话"的占用者） |
 
 - 失败触发的**门**（别乱放宽）：来源门（`isExecToolName`）· 文件转储形态门（`looksLikeFileDump`）· 错误上下文门（`EXEC_ERROR_CONTEXT_RE`）· 退出标记（`EXIT_MARK_RE`，认 `[exit code: N]` / `EXITCODE: N` / `EXIT=N`）· 事实型短路（`RECALL_FACTUAL_EXTRA_RE`）· **限额类短路**（`RECALL_QUOTA_RE`：limit reached / rate limit / quota ⇒ 不触发）。
 - 节点触发的四件套：**命中条件** + **每会话一次**（`Set<session>`）+ **探针事件** `ev=<name>-hint{state:injected|dup}` + **独立早退门**（否则别的开关没开时会被静默吞掉）。
 - ⚠️ `tools/pre-execute` **只能 deny/allow，不能注入** ⇒ 节点提示只能在"动作发生的那一次工具结果之后"到达。
-- ⚠️ `v50` 里另有一个**「经验过程匹配器」是纯函数、未接线**（`aios-activation.ts:3254` 注释自述"纯函数 · 未接线"）⇒ ⛔ 别当成已生效的召回逻辑。
+- ⚠️ `` 里另有一个**「经验过程匹配器」是纯函数、未接线**（`aios-activation.ts:3254` 注释自述"纯函数 · 未接线"）⇒ ⛔ 别当成已生效的召回逻辑。
 
 ### 4.2 改 runtime 的固定流程
 
 1. 改代码（用 `edit` 工具，⛔ 不用 PowerShell 整文写 · P54）。
-2. **`POLICY` 追加 token** ⇒ 否则 `ev=apply` 与上次逐字相同、判不出是否加载（P6）。当前 `POLICY` 尾串实测以 `+v49q-runtime-edit-node` 结束（✅ 已核 `aios-activation.ts:369`）。
+2. **`POLICY` 追加 token** ⇒ 否则 `ev=apply` 与上次逐字相同、判不出是否加载（P6）。当前 `POLICY` 尾串实测以 `+` 结束（✅ 已核 `aios-activation.ts:369`）。
 3. 单测：新增纯函数用例 + **走真实 handler 的接线用例**（`checkAsync` + `AIOS_STATE_DIR` 临时目录 + `delete process.env.AIOS_EXPERIENCE_RECALL` 解除测试短路）。
 4. 重启宿主。
 5. 读最后一条 `'"ev":"apply"'` 确认 token 在 policy 尾（**带引号搜**，裸 `ev=apply` 恒 0 条）。
@@ -321,9 +321,9 @@ A/B 的**替换形态**结论**不能预测**加卡形态（任务卡族实测�
 7. **index stale 会直接抛错**（设计如此）⇒ 语料一变就 `build`，别用旧向量。
 8. **机制能修的坑就别只写经验**：判定依据 = "触发事件是否消失"，不是读数好不好看。
 9. **"声明类"数据的审计必须解析结构化位置**：grep 全文必然污染（本批踩 2 次；与 P70「`\s*` 跨行吞行」同族）。
-10. **读数必须标通道**：词面（运行时 v49）与混合（离线语义层 core）是两套读数，⛔ 混着引用（§2.0.1）。
+10. **读数必须标通道**：词面（运行时 ）与混合（离线语义层 core）是两套读数，⛔ 混着引用（§2.0.1）。
 
-### 5.1 对照实验的装置纪律（P96 · 2026-11-02 入库 · 方法论层）
+### 5.1 对照实验的装置纪律（P96 · 入库 · 方法论层）
 
 > **为什么放这里而不进 PITFALLS**：P96 不是"某个工具 / 环境会咬人的点"，而是**设计对照实验时的装置纪律**——写任务书的那一刻就决定了整轮实验有没有效。它没有"照做法做就够了"的单点处置，也修不进机制；放进坑台账会被当成又一条工具坑。这里与 §3.2 七判据、P74 / P86 同属"判据与装置"。
 
@@ -332,7 +332,7 @@ A/B 的**替换形态**结论**不能预测**加卡形态（任务卡族实测�
 - **处置**：① 任务书只写「目标 + 硬约束 + 验收」，⛔ 不写「去看 <被测对象>」；② 各臂任务书**逐字相同**，只差被检验的那一个变量；③ 派发前 `grep` 任务书，确认不含被测对象名；④ 一旦发现污染 ⇒ **整轮作废重跑**，⛔ 不拿"差异不显著"当结论；⑤ 装置偏差要**如实记**（哪一组作废、为什么），别悄悄换掉。
 - **判据**：实验报告必须写清「各组任务书差在哪一个变量」+ 任务书原文可核；缺这行 = 未验证。
 - **同族辨析**：P74（query 用经验原文 ⇒ 循环论证）与 P86（判据脚本自己裁字段 ⇒ 假退化）都在**判据侧**，P96 在**装置侧**（被测者拿到任务书之前就泄漏了变量）；三者共用一条纪律：**先排除装置与判据，再判语料 / 代码**。
-- **证据**：`（作者私有工作记忆，未随发布） §二十二·1`（C′ 组「对比无效」原话）· 交办记录 `task_cards/memory/TODO.template.md`（2026-11-01 23:2x ③）。
+- **证据**：`（作者私有工作记忆，未随发布） §二十二·1`（C′ 组「对比无效」原话）· 交办记录 `task_cards/memory/TODO.template.md`。
 
 ---
 
@@ -356,7 +356,7 @@ A/B 的**替换形态**结论**不能预测**加卡形态（任务卡族实测�
 
 > 纪律：**基线不是常量**。每次批次终态重新盖指纹；引用旧基线前先核当前 fp（这就是 P86 的精神）。下表左半 = 交办时给定的今日终态口径；右半 = 本手册作者写手册时的实测复核。
 
-| 项目 | 今日终态（`§十三·4`，Lead 落盘） | 本手册作者实测（2026-11-01 06:3x–06:4x） |
+| 项目 | 今日终态（`§十三·4`，Lead 落盘） | 本手册作者实测 |
 |---|---|---|
 | 语料 | **1151** · fp `cabaf522` | **1152** · fp `214fa897`（本批并发改动：PITFALLS +1） |
 | 语料构成 | — | `pitfall 89 · proven 949 · pattern 78 · experience 23 · digest 9 · task_card 4`（✅ 实测） |
@@ -374,13 +374,13 @@ A/B 的**替换形态**结论**不能预测**加卡形态（任务卡族实测�
 ## 8. 指针
 
 - 读数账本（八族全过程 · §十二/§十三 是判据基线出处）：`（作者私有工作记忆，未随发布）`
-- 自然注入实验：`scratch/EXPERIMENT-ENCODING-NATURAL-2026-11-01.md` · `scratch/EXPERIMENT-RECALL-PRECISION-2026-11-01.md`
+- 自然注入实验：`scratch/EXPERIMENT-ENCODING-NATURAL-.md` · `scratch/EXPERIMENT-RECALL-PRECISION-.md`
 - 语义层设计 / 局限：`（作者私有工作记忆，未随发布）`
 - 坑台账：`task_cards/memory/PITFALLS.md` · 待办：`task_cards/memory/TODO.template.md`（T18–T31 是本线）
 - 卡片：`AI-OS-Adaptation/TASK-20261023-001`
 - 原草案（保留作历史）：`maintenance-skills/experience-family-pipeline.draft.md`（指针页）
 
-## 2026-11-02 同代读数（P91–P96 入库后的回归门）
+## 同代读数（P91–P96 入库后的回归门）
 
 > 语料 1162 条 · fp a528a015b7e90a9d86ca12d53e33dda27b2701\ · 期望集已同代（编码族 +P91/P94 · 工具族 +P92/P95 · 自检族 +P93/P96）。
 
@@ -390,12 +390,12 @@ A/B 的**替换形态**结论**不能预测**加卡形态（任务卡族实测�
 | 混合 | 75 | 85 | 10 | 15 | 9 |
 
 - 对比同步前（期望集未同代）：混合 top1 **72 → 75**、fp **18 → 15** ⇒ 早前「79→78 / 75→72」的降是**代际假象**，不是退化。
-- ✅ **已转正（2026-11-02 · 卡 `AI-OS-Adaptation/TASK-20261102-020`）**：`_scene_probe.py` 与 `semantic_search.py` 已移入 **`tools/probes/`（纳入版本控制）** ⇒ 探针本体与期望集换机/克隆拿得到；`scratch/` 原位留 runpy 薄壳 ⇒ **旧命令仍等价**（实测新旧两路径 stdout 逐行相同）。索引 `.npy/.json` 与快照仍属**产物**，留 `scratch/` 不进 git（由 `build` 重建）。
+- ✅ **已转正**：`_scene_probe.py` 与 `semantic_search.py` 已移入 **`tools/probes/`（纳入版本控制）** ⇒ 探针本体与期望集换机/克隆拿得到；`scratch/` 原位留 runpy 薄壳 ⇒ **旧命令仍等价**（实测新旧两路径 stdout 逐行相同）。索引 `.npy/.json` 与快照仍属**产物**，留 `scratch/` 不进 git（由 `build` 重建）。
 - 复跑命令（本机）：`<外部项目>\.venv\Scripts\python.exe tools/probes/_scene_probe.py`（venv 才有 fastembed；repo python 会 `ModuleNotFoundError`）。
 
-### 2026-11-02 转正后复跑（可复现性验收）
+### 转正后复跑（可复现性验收）
 
-- 语料 **1170** 条 · fp `011c62115e6578266f2a7a200b95bc7e0196ccc1` · `build` **39.64s**（venv · 零安装 · `built_at 2026-11-02T02:13:11`）。
+- 语料 **1170** 条 · fp `011c62115e6578266f2a7a200b95bc7e0196ccc1` · `build` **39.64s**（venv · 零安装 · `built_at T02:13:11`）。
 - **两个不同 cwd 各跑一次**（`<repo>` 用相对路径 / `<repo>\tools\probes` 用裸文件名）⇒ stdout **282 行逐行相同**；跑前/跑后语料指纹均为 `011c6211…`（无漂移）：
 
 ```text
@@ -408,7 +408,7 @@ A/B 的**替换形态**结论**不能预测**加卡形态（任务卡族实测�
 
 ## 6. Q5（能力是否真降低 agent 成本）对照实验的三条硬约束
 
-> 2026-11-02 实测**失败案例**：同一可访问性走查任务跑了两臂，结论**作废** —— 但失败原因本身就是最值钱的发现。
+> **失败案例**：同一可访问性走查任务跑了两臂，结论**作废** —— 但失败原因本身就是最值钱的发现。
 
 ### 6.1 那次是怎么废的（两硬伤）
 

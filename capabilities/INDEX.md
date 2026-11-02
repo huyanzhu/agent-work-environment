@@ -1,7 +1,7 @@
 # capabilities/INDEX — 8 个域能力（域合并）
 
 > **一个领域一个文件**，片不含阶段字段（领域是唯一分类轴）。
-> 旧 17 个能力已归档到 `capabilities/_archive/`，其内容按领域抽象合并；
+> 旧 8 个域能力已归档到 `capabilities/_archive/`，其内容按领域抽象合并；
 > 历史账本里的旧能力名通过 `capabilities/_aliases.json` 映射到域能力。
 
 | # | 域能力 | 领域 | 片数 | 什么时候用 |
@@ -17,7 +17,7 @@
 
 ## 怎么用
 
-- 开工先看本表，选**一个**与你这次改动同域的域能力，read 它的全文并照它做；
-- 记录：`python tools/task_card.py capability <ID> --name <域能力名|none> --why "<一句>"`（v4 单字段；旧三阶段卡才用 `--stage start|impl|close`）；
+- 开工先调 `auto_capability`（`what` 一句）→ 它返回 8 个领域词表，选**一个**同域的，read 它的全文并照它做；本表是目录（查领域/片数/什么时候用）；
+- 记录：`python tools/task_card.py capability <ID> --name <域能力名|none> --why "<一句>"`（v4 单字段；旧三阶段卡才用 `--stage start|impl|close`）
 - 想先看当前会提示哪个域能力（**只读 · 不记账**）：`python tools/task_card.py capability-hint <ID>` —— `--stage` **可省略**（省略 = 单字段卡口径，与 `claim` 相同）；显式给 `start|impl|close` 仍接受，但提示按**域**出，阶段不改变文案；
 - ⛔ 不要一次选多个域；跨域任务按**主改动**所在域选。

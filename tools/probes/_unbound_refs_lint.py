@@ -27,7 +27,7 @@
 
 用法：
     python tools/probes/_unbound_refs_lint.py
-    python tools/probes/_unbound_refs_lint.py --root <repo>/work/_clone/agent-work-environment
+    python tools/probes/_unbound_refs_lint.py --root <clone 目录>
     python tools/probes/_unbound_refs_lint.py --allow noteCatchFail --allow Foo,Bar
 
 退出码：0 零条 · 1 有未绑定 · 2 根目录/runtime 缺失

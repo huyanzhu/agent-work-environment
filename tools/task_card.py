@@ -1053,20 +1053,18 @@ def claim_hint_text(task_id, stage, mode, topic=""):
         dom = infer_cell_domain(topic)
         dc = domain_capability_of(dom) if dom else ""
         if dc:
-            intro = _domain_intro(dc)
-            return ("[AI-OS] 本阶段可用能力（%s · 一域一文件）：\n"
-                    "        %s\n"
-                    "        → capabilities/%s.md\n"
+            return ("[AI-OS] 本阶段可用能力：用检索工具 `auto_capability` → 它会给出 8 个领域词表，选一个\n"
+                    "        机器推测域：%s（仅参考 · 以检索/自选为准）\n"
                     "        记录：python tools/task_card.py capability %s "
                     "--name <域能力|none> --why \"...\""
-                    % (dom, intro, dc, task_id))
+                    % (dom, task_id))
         mode = "generic"  # ⛔ 不静默、⛔ 不猜域：判不出就退回通用文案
     if mode != "generic":
         return ""
-    return ("[AI-OS] 本阶段可用能力：见 capabilities/INDEX.md\n"
-            "        开工前先定用哪个，然后记录：\n"
-            "        python tools/task_card.py capability %s "
-            "--name <能力|none> --why \"<一句>\""
+    # 用户 2026-11-02 口径：提示换成**检索工具**；能力词表只有 8 个域能力
+    return ("[AI-OS] 本阶段可用能力：用检索工具 `auto_capability` → 它会给出 8 个领域词表，选一个\n"
+            "        记录：python tools/task_card.py capability %s "
+            "--name <域能力|none> --why \"<一句>\""
             % task_id)
 
 

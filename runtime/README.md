@@ -122,7 +122,7 @@ diagnostics/probe            session/*                     retrieval/*
 
 ```bash
 node runtime/tests/activation.test.mjs                      # 合计 208 项 · 通过 207 · 失败 1（S37 已知红）
-python -m unittest discover -s tools/tests -p "test_*.py"    # Ran 143 tests · OK
+python -m unittest discover -s tools/tests -p "test_*.py"    # Ran 147 tests · OK
 ```
 
 - 测试**隔离**：`AIOS_*` 环境变量指向 `scratch/_selftest_*`，不碰真实卡与真实探针。

@@ -22,10 +22,10 @@ cp -r .aios-sample .aios          # Windows: xcopy /E /I .aios-sample .aios
 
 | 文件 | 作用 | 缺省（文件缺失时） | `.aios-sample` 建议值 | 代码锚点 |
 |---|---|---|---|---|
-| `.aios/cap-cells.json` | `max` = 检索候选上限 · `claimHint` = 开工提示文案 · `domainInject` = **声明驱动的域注入** | `max=2` · `claimHint="generic"` · `domainInject="off"` | `{"max":1,"claimHint":"generic","domainInject":"on"}` | `capCellsConfig()` · `phaseMaxCandidates()` · `capNudgeEnabled()` |
-| `.aios/phase_inject.json` | **阶段注入总闸**（含检索注入；也是域注入的总闸） | **开** | `{"enabled":true}` | `phaseInjectEnabled()` |
-| `.aios/experience_recall.json` | 失败签名触发的经验召回 | **关** | `{"enabled":true}` | `experienceRecallEnabled()` |
-| `.aios/r3-wake.json` | **R3 空闲唤醒 / 记忆维护** | **关**（缺失 / 非严格 `true` ⇒ 关） | `{"enabled":false}`（需要时再开） | `r3WakePath()` · `disarmR3Wake()` |
+| `.aios/cap-cells.json` | `max` = 检索候选上限 · `claimHint` = 开工提示文案 · `domainInject` = **声明驱动的域注入** | `max=2` · `claimHint="generic"` · `domainInject="off"` | `{"max":1,"claimHint":"generic","domainInject":"on"}` | `capCellsConfig` · `phaseMaxCandidates` · `capNudgeEnabled` |
+| `.aios/phase_inject.json` | **阶段注入总闸**（含检索注入；也是域注入的总闸） | **开** | `{"enabled":true}` | `phaseInjectEnabled` |
+| `.aios/experience_recall.json` | 失败签名触发的经验召回 | **关** | `{"enabled":true}` | `experienceRecallEnabled` |
+| `.aios/r3-wake.json` | **R3 空闲唤醒 / 记忆维护** | **关**（缺失 / 非严格 `true` ⇒ 关） | `{"enabled":false}`（需要时再开） | `r3WakePath` · `disarmR3Wake` |
 
 > `domainInject` 的语义：`on` = **跟随卡上声明**（卡上没声明就不注入）；`off` = 连声明也不读。
 > ⚠️ 关掉 `domainInject` **不等于"不注入"**，而是回落到检索候选注入；想测"完全无注入"必须同时关 `phase_inject` 或移走 `inject_probe.json`。
@@ -81,7 +81,7 @@ Windows（PowerShell）：
 ```powershell
 Get-ChildItem .aios -Filter *.json |
   Where-Object { $_.Length -lt 4096 } |
-  ForEach-Object { $_.Name + " = " + (Get-Content $_.FullName -Raw).Trim() }
+  ForEach-Object { $_.Name + " = " + (Get-Content $_.FullName -Raw).Trim }
 ```
 
 macOS / Linux（bash）：

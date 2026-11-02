@@ -1,4 +1,4 @@
-# Knowledge Space Maintenance（Knowledge Maintenance v2 → v3 · 2026-08-24）
+# Knowledge Space Maintenance（Knowledge Maintenance v2 → v3 · ）
 
 > v1（D-013 真实运行：知识归并 / Consolidation）→ **v2**（D-016：真实维护任务证明职责过窄，扩展为 Knowledge Space 完整性维护）→ **v3**（D-022：Lifecycle / Archive facet——Intake #5 dsh-archive-agent-notes 外部 Skill 可迁移方法层融合，补记录生命周期维度）。
 > 归属：Evolution Instance 维护 AI-OS 基础设施的能力（`maintenance-skills/`）；与 capabilities/（Work 可装载的工作能力）区分。
@@ -7,11 +7,11 @@
 ## 职责（均有真实证据）
 
 - **Content / Consolidation** —— 查重/抽象/挂 Evidence/新建/归并/关联（D-013：启动依赖注入 + WAL 备份）
-- **Integrity** —— 乱码/损坏修复、来源恢复（D-016 A4：两篇 GBK 乱码 pattern 反转恢复 + 重建）
-- **Structure** —— frontmatter 完整性（D-016 B3：3 篇补 keywords）
-- **Index / Discovery** —— 索引统计与检索可达性（D-016 B1：index 与实际对齐；A2：顶层元规则检索盲区修复）
+- **Integrity** —— 乱码/损坏修复、来源恢复（D-016 ：两篇 GBK 乱码 pattern 反转恢复 + 重建）
+- **Structure** —— frontmatter 完整性（D-016 ：3 篇补 keywords）
+- **Index / Discovery** —— 索引统计与检索可达性（D-016 ：index 与实际对齐；：顶层元规则检索盲区修复）
 - **Provenance** —— Evidence 原位保留、修复保留备份与注记（D-013 / D-016）
-- **Lifecycle / Archive** —— 记录生命周期裁决：新增先做 supersession 审计；按未来决策价值分类 keep / archive / reject / delete；归档最小改动 + 封存纪律 + 入链修复（v3 · 2026-08-24 · Intake #5 dsh-archive-agent-notes 融合 · D-022）
+- **Lifecycle / Archive** —— 记录生命周期裁决：新增先做 supersession 审计；按未来决策价值分类 keep / archive / reject / delete；归档最小改动 + 封存纪律 + 入链修复（v3 · · Intake #5 dsh-archive-agent-notes 融合 · D-022）
 
 ## 触发条件（Activation Semantics · 本轮真实确认）
 
@@ -39,9 +39,9 @@ Inspect → Classify Finding（五类）→ Decide → Repair / Consolidate / Pr
 7. 记录裁决：evolution/decisions.md + growth.md + INT（为什么新建/归并/不合并/重建）
 8. 验证：experience_push 检索命中（置顶）；内容可读性/结构校验
 
-## Lifecycle / Archive facet（v3 · 2026-08-24 · Intake #5 融合）
+## Lifecycle / Archive facet（v3 · · Intake #5 融合）
 
-> 来源：外部 Skill `（第三方 skill 原文未随发布）`（deepseek-ai/deepseek-harness · 2026-08-24 HTTP 200 逐字下载 · D-022）。
+> 来源：外部 Skill `（第三方 skill 原文未随发布）`（deepseek-ai/deepseek-harness · HTTP 200 逐字下载 · D-022）。
 > 语义：v2 的五个职责管"知识/记录健不健康"；本 facet 管"哪些该留、哪些该归档、哪些该删"——按**未来决策价值**裁决；词数/年龄只是发现辅助，不是归档判据。
 
 适用对象（AI-OS 记录/知识语料）：`domains/` 知识、`task_cards/` 工作记忆、evolution 候选（`lines.md` Candidates / `new-capabilities.md`）。

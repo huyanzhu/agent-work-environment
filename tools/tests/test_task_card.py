@@ -352,11 +352,10 @@ class TaskCardMechanismTest(unittest.TestCase):
         self._card("demo-project", "TASK-20260101-901", "Planning", title="机制测试卡")
         code, out = self._run(T.cmd_claim, "demo-project/TASK-20260101-901")
         self.assertEqual(code, 0, out)
-        self.assertIn("[AI-OS] 本阶段可用能力：见 capabilities/INDEX.md\n", out)
-        self.assertIn("        开工前先定用哪个，然后记录：\n", out)
-        self.assertIn("        python tools/task_card.py capability "
+        self.assertIn("[AI-OS] 本阶段可用能力：用检索工具 `auto_capability` → 它会给出 8 个领域词表，选一个\n", out)
+        self.assertIn("        记录：python tools/task_card.py capability "
                       "demo-project/TASK-20260101-901 "
-                      "--name <能力|none> --why \"<一句>\"\n", out)
+                      "--name <域能力|none> --why \"<一句>\"\n", out)
         names = T._capability_names()
         self.assertGreaterEqual(len(names), 17, "能力名列表应覆盖能力库（同源）")
         hit = sorted(n for n in names if n in out)
@@ -370,10 +369,8 @@ class TaskCardMechanismTest(unittest.TestCase):
                    title="前端 页面 评审补充")
         code, out = self._run(T.cmd_claim, "demo-project/TASK-20260101-902")
         self.assertEqual(code, 0, out)
-        self.assertIn("[AI-OS] 本阶段可用能力（前端 · 一域一文件）：\n", out)
-        self.assertIn("当做页面、觉得丑、或要过可访问性/性能验收时", out,
-                      "必须是该域能力 frontmatter `intro` 的**原文**")
-        self.assertIn("→ capabilities/domain-frontend.md\n", out)
+        self.assertIn("[AI-OS] 本阶段可用能力：用检索工具 `auto_capability` → 它会给出 8 个领域词表，选一个\n", out)
+        self.assertIn("机器推测域：前端（仅参考 · 以检索/自选为准）\n", out)
         self.assertIn("记录：python tools/task_card.py capability "
                       "demo-project/TASK-20260101-902 "
                       "--name <域能力|none> --why \"...\"", out)
@@ -386,7 +383,7 @@ class TaskCardMechanismTest(unittest.TestCase):
         self._card("demo-project", "TASK-20260101-903", "Planning", title="机制测试卡")
         code, out = self._run(T.cmd_claim, "demo-project/TASK-20260101-903")
         self.assertEqual(code, 0, out)
-        self.assertIn("[AI-OS] 本阶段可用能力：见 capabilities/INDEX.md\n", out)
+        self.assertIn("[AI-OS] 本阶段可用能力：用检索工具 `auto_capability` → 它会给出 8 个领域词表，选一个\n", out)
         self.assertNotIn("CELLS.md#", out, "判不出域时⛔ 不得硬套格（应回退 generic）")
 
     def test_claim_hint_cell_former_gap_domain_now_has_capability(self):
@@ -401,8 +398,7 @@ class TaskCardMechanismTest(unittest.TestCase):
                    title="运行时 注入 探针")
         code, out = self._run(T.cmd_claim, "demo-project/TASK-20260101-905")
         self.assertEqual(code, 0, out)
-        self.assertIn("（AI-OS 自身 · 一域一文件）：", out)
-        self.assertIn("→ capabilities/domain-aios-itself.md", out)
+        self.assertIn("机器推测域：AI-OS 自身（仅参考 · 以检索/自选为准）", out)
         self.assertNotIn("见 capabilities/INDEX.md", out, "域解析成功时⛔ 不给通用文案")
 
     def test_claim_hint_real_site_config_stays_off(self):
@@ -448,7 +444,7 @@ class TaskCardMechanismTest(unittest.TestCase):
         self._card("demo-project", "TASK-20260101-921", "Planning")
         code, out = self._run(T.cmd_claim, "demo-project/TASK-20260101-921")
         self.assertEqual(code, 0, out)
-        self.assertIn("[AI-OS] 本阶段可用能力：见 capabilities/INDEX.md\n", out)
+        self.assertIn("[AI-OS] 本阶段可用能力：用检索工具 `auto_capability` → 它会给出 8 个领域词表，选一个\n", out)
 
     def test_capability_hint_matches_claim_text(self):
         """`capability-hint` 与 claim **同一份文案逻辑**，且 ⛔ 不落盘、⛔ 不记账。"""
@@ -459,11 +455,10 @@ class TaskCardMechanismTest(unittest.TestCase):
                                        "--stage", "impl"])
         self.assertEqual(code, 0, out)
         self.assertEqual(out,
-                         "[AI-OS] 本阶段可用能力：见 capabilities/INDEX.md\n"
-                         "        开工前先定用哪个，然后记录：\n"
-                         "        python tools/task_card.py capability "
+                         "[AI-OS] 本阶段可用能力：用检索工具 `auto_capability` → 它会给出 8 个领域词表，选一个\n"
+                         "        记录：python tools/task_card.py capability "
                          "demo-project/TASK-20260101-930 "
-                         "--name <能力|none> --why \"<一句>\"\n")
+                         "--name <域能力|none> --why \"<一句>\"\n")
         log = os.path.join(self.active, "demo-project", "TASK-20260101-930.log")
         self.assertFalse(os.path.isfile(log), "capability-hint ⛔ 不落盘、不记账")
 
@@ -482,8 +477,7 @@ class TaskCardMechanismTest(unittest.TestCase):
             self.assertEqual(code, 0, out)
             outs.append(out)
         self.assertEqual(len(set(outs)), 1, "阶段⛔ 不得改变提示文案（域合并后按域出）")
-        self.assertIn("（前端 · 一域一文件）：", outs[0])
-        self.assertIn("→ capabilities/domain-frontend.md\n", outs[0])
+        self.assertIn("机器推测域：前端（仅参考 · 以检索/自选为准）", outs[0])
 
     def test_capability_hint_stage_is_optional(self):
         """省略 `--stage` ⇒ 单字段卡口径（与 `--stage start` 逐字相同 · 与 claim 同一文案）。"""
@@ -498,7 +492,7 @@ class TaskCardMechanismTest(unittest.TestCase):
         self.assertEqual(code, 0, with_stage)
         self.assertEqual(no_stage, with_stage,
                          "省略 --stage 必须等价于显式 start（单字段口径）")
-        self.assertIn("[AI-OS] 本阶段可用能力：见 capabilities/INDEX.md\n", no_stage)
+        self.assertIn("[AI-OS] 本阶段可用能力：用检索工具 `auto_capability` → 它会给出 8 个领域词表，选一个\n", no_stage)
         log = os.path.join(self.active, "demo-project", "TASK-20260101-933.log")
         self.assertFalse(os.path.isfile(log), "capability-hint ⛔ 不落盘、不记账")
 
@@ -560,10 +554,10 @@ class TaskCardMechanismTest(unittest.TestCase):
         between = text[text.index("\n", i_status):i_cap]
         self.assertNotIn("\n## ", between, "Current Status 与能力节之间不得夹其它节：\n" + between)
         section = text[i_cap:i_outcome]
-        # 🔴 域合并：v2 能力节的指引从 CELLS.md 改为 INDEX.md（8 个域能力）
+        # v2 能力节指引：入口动作 = auto_capability（8 个领域词表）
         for frag in ("- [ ] **开工**", "- [ ] **实现**", "- [ ] **收尾**",
                      "--stage start", "--stage impl", "--stage close",
-                     "_capability_choice_lint.py", "capabilities/INDEX.md"):
+                     "_capability_choice_lint.py", "auto_capability"):
             self.assertIn(frag, section, "能力节缺 `%s`：\n%s" % (frag, section))
 
     def test_create_v2_close_checklist_keeps_five_and_pointer(self):
@@ -606,16 +600,16 @@ class TaskCardMechanismTest(unittest.TestCase):
         self.assertNotIn("## 能力（三处必填", got, "缺省 create 不得用 v2")
 
     def test_default_create_has_single_field_capability_section(self):
-        """缺省 v4 ⇒ 有 `## 使用的能力（可 none）` + `- 能力: `（未记录）``，且⛔ 没有 `- 开工:`。"""
+        """缺省 v4 ⇒ 有 `## 使用的能力` + `- 能力: `（未记录）``，且⛔ 没有 `- 开工:`。"""
         code, out = self._run(T.main, ["task_card.py", "create", "单字段缺省"])
         self.assertEqual(code, 0, out)
         _, path = self._created_path(out)
         text = self._card_text(path)
-        self.assertIn("## 使用的能力（可 none）", text, "缺省卡必须有单字段能力节：\n" + text[:600])
+        self.assertIn("## 使用的能力", text, "缺省卡必须有单字段能力节：\n" + text[:600])
         self.assertIn("- 能力: `（未记录）`", text, "缺省卡必须有单字段占位行")
         self.assertNotIn("- 开工:", text, "v4 卡⛔ 不得有三阶段字段行")
         i_status = text.index("## Current Status")
-        i_cap = text.index("## 使用的能力（可 none）")
+        i_cap = text.index("## 使用的能力")
         i_outcome = text.index("## Outcome")
         self.assertLess(i_status, i_cap)
         self.assertLess(i_cap, i_outcome)

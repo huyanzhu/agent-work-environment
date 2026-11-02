@@ -58,7 +58,7 @@ Estimated Finish: YYYY-MM-DD / TBD
 ## 能力（三处必填 · 从 capabilities/ 选）
 
 > 每处都要作答（`none` 合法，但必须给一句能对上本次改动的理由）；记录走脚本写 `.log`，⛔ 不写本节。
-> 选之前看 `capabilities/INDEX.md`（8 个域能力 · 一域一文件）；选与你这次改动**同域**的那个。
+> 选之前调 `auto_capability`（`what` 一句）⇒ 8 个领域词表；选与你这次改动**同域**的那个。
 
 - [ ] **开工**（claim 后、动手前）→ `python tools/task_card.py capability <ID> --stage start --name <能力|none> --why "<一句>"`
 - [ ] **实现**（首次实质改动后）→ `... --stage impl ...`（同一能力贯穿可写「复用」）

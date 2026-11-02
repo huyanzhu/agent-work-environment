@@ -2313,8 +2313,9 @@ const WORK_REPORT_DESC = [
   '什么时候用：开始一件事时 · 想要某类能力时 · 方向变了 · 被甲方否定了 · 发现自己缺什么时。有变化才说，不必每步都报。',
   '什么时候别用：不要用它写日志 / 报账；不要上报你还没跟对方确认过的判断。',
   'confirmed 必填：user（对方确认过）/ agent-inferred（你自己推断的 —— 只当假设存，⛔ 不得当事实）。',
-  'need 取自能力类型词表（task_cards/NEEDS-VOCAB.md 的三维：领域 / 帮助类型 / 关注面），每轴最多 6 个。',
-  '示例：{"what":"做作品集首页","need":["前端","实现"],"concern":["美观·风格"],"confirmed":"user"}',
+  '**调它就会先给你「8 个领域词表」**（前端 / 后端 / 数据 / 文档 / 产品 / 环境·运维 / 求职·职业 / AI-OS 自身）——'
+    + '你从里面选一个，写进卡上「能力」字段即可；不需要先填别的字段。',
+  '示例：{"what":"做作品集首页"} ⇒ 返回领域词表；选 `domain-job-search` 后用 task_card.py capability 记录。',
   '调用后会**同步跑一次检索**，把候选直接返回给你（id / 来源 / 角色 / 命中通道；最多等几秒）。',
 ].join('\n')
 
@@ -2344,7 +2345,7 @@ const WORK_REPORT_PARAMS = {
       },
     },
   },
-  required: ['what', 'confirmed'],
+  required: [],
 }
 
 /** 一条上报（**语料只留内存**）。⛔ 不含推理原文 · ⛔ 不含工具输出。 */
@@ -2371,23 +2372,22 @@ function workReportBudgetLeft(used: number): number {
  * ⛔ 不写文件 · ⛔ 不缓存（改词表即生效）· ⛔ 不占上报预算（这不是一次上报）。
  */
 function vocabText(): string {
-  const head = '【AI-OS · 选词表（两步式第一步）】只从下列**词表值**里选（每轴可多选 · 合计建议 ≤6）：\n'
-  const tail = '\n选好后：再调 auto_capability，带 `phase:"submit"` + `axes:{domain,help,concern}`（值必须是上表原词，⛔ 不要自创）。'
+  const head = '【AI-OS · 领域词表】从下列 8 个**领域**里选一个 —— 就是你卡上「能力」要填的那个（一个域一个文件）：\n'
+  const tail = '\n选好后：把该域写进卡 —— `python tools/task_card.py capability <ID> --name domain-xxx --why "<一句>"`；'
+    + 'Runtime 按声明投递该域能力。⛔ 不要自创域。'
   try {
-    const raw = readFileSync(join(AIOS_ROOT, 'task_cards', 'NEEDS-VOCAB.md'), 'utf8')
-    const rows = raw.split('\n')
-      .filter(l => /^\|\s*`[^`]+`\s*\|/.test(l))
-      .map(l => '· ' + l.trim().replace(/^\|\s*/, '').replace(/\s*\|\s*/g, ' → ').replace(/\s*\|\s*$/, ''))
+    const raw = readFileSync(join(AIOS_ROOT, 'capabilities', 'INDEX.md'), 'utf8')
+    const rows: string[] = []
+    for (const line of raw.split('\n')) {
+      const m = /^\|\s*\d+\s*\|\s*`(domain-[a-z0-9-]+)`\s*\|\s*([^|]+?)\s*\|\s*\d+\s*\|\s*(.+?)\s*\|\s*$/.exec(line)
+      if (m !== null) rows.push('· `' + m[1] + '`（' + m[2] + '）' + m[3])
+    }
     if (rows.length > 0) return head + rows.join('\n') + tail
   } catch (err) {
     noteCatchFail('state:vocab', err)
     /* 回退常量 */
   }
-  return head
-    + '· 领域 → ' + WR_DOMAIN_VALUES.join(' · ') + '\n'
-    + '· 帮助类型 → ' + WR_HELP_TYPES.join(' · ') + '\n'
-    + '· 关注面 → ' + WR_CONCERN_VALUES.join(' · ')
-    + tail
+  return head + WR_DOMAIN_VALUES.map(d => '· `' + d + '`').join('\n') + tail
 }
 
 /**
@@ -2511,11 +2511,14 @@ function registerWorkReportTool(ctx: any): void {
         const owner = who.owner
         // 🔴 两步式第一步：只回词表（不记录、不占预算、不检索）
         const a: Record<string, unknown> = args !== null && typeof args === 'object' ? args as Record<string, unknown> : {}
-        if (a.phase === 'vocab') {
+        // 用户口径：**调它先给领域词表**（不需要先填 need/axes/concern 等字段）
+        const noAxes = (a.need === undefined || (Array.isArray(a.need) && a.need.length === 0))
+          && a.axes === undefined && a.concern === undefined
+        if (a.phase === 'vocab' || (a.phase !== 'submit' && noAxes)) {
           emit({ ev: 'work-report', obs: OBS, session: owner, identity: who.identity, outcome: 'vocab', at: Date.now(), mono: mono() })
           return {
             ok: true, id: '',
-            note: '这是两步式的第一步：只返回词表 —— **未记录、未检索**。从词表选好值后，再调一次带 `axes` 提交。',
+            note: '这是领域词表（**未记录、未检索**）：从 8 个领域里选一个，写进卡上「能力」字段即可。',
             vocab: vocabText(),
           }
         }
