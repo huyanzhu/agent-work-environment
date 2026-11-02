@@ -42,7 +42,7 @@ AI-OS 的全部工作都压在这四道断点上：
 ## 快速开始
 
 ```bash
-git clone https://github.com/<user>/agent-work-environment.git
+git clone https://github.com/huyanzhu/agent-work-environment.git
 cd agent-work-environment
 cp -r .aios-sample .aios      # 首次使用必做：Windows 用 xcopy /E /I .aios-sample .aios
 ```

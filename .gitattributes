@@ -1,0 +1,6 @@
+# 统一换行：发布物内所有文本一律 LF（否则 Windows 默认 autocrlf 会把 LF 转 CRLF，
+# 导致 MANIFEST.sha256 在别的机器上校验失败）
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.gz binary
