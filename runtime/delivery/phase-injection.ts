@@ -11,7 +11,7 @@
 
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { OBS, WORK_REPORTS, aiosStateDir, clip, emit, mono, resolveScript, resolveToolScript, userMessageOf, EXEC_TOOL_RE, isExecToolName, stripRepoPaths } from '../diagnostics/probe.ts'
+import { OBS, WORK_REPORTS, aiosStateDir, clip, emit, mono, resolveScript, resolveToolScript, userMessageOf, EXEC_TOOL_RE, isExecToolName, stripRepoPaths, noteCatchFail } from '../diagnostics/probe.ts'
 import type { PendingDelivery, SessionState, TaskCursor } from '../session/session-state.ts'
 import { SESSIONS, sessionIdOf } from '../session/session-state.ts'
 import type { ActivityItem, WorkContext } from '../session/work-context.ts'
@@ -22,7 +22,7 @@ import { CAP_NUDGE_NEED, CAP_NUDGE_TEXT, PHASE_BUDGET_CANDIDATES, capCellsConfig
 import { PHASE_TITLE, applyDeclaredDomainInjection } from '../activation/declared-domain.ts'
 import { readDeliveryProbe, readReminderProbe, readInjectProbe, deliverySourcesActive, noteProbeAuth, sessionAllowsProbe } from './pending-delivery.ts'
 
-import { focusCardOf, myOccupiedCards, reminderFor } from '../session/lifecycle.ts'
+import { focusCardOf, myOccupiedCards, reminderFor, scanCards } from '../session/lifecycle.ts'
 import { STAGE4_RETRIEVAL_ENTRY, WR_HELP_TYPES, WR_DOMAIN_VALUES, WR_CONCERN_VALUES, RETURNED_CAPABILITY_IDS, rememberCapabilityIds, isCapabilityCandidatePath, PERMISSION_FAIL_RE, EXIT_MARK_RE, EXEC_ERROR_CONTEXT_RE, ENCODING_FAIL_RE, ENCODING_DETAIL_RE, looksLikeFileDump, RECALL_FACTUAL_EXTRA_RE, RECALL_QUOTA_RE, COMMON_TOOL_NAME_RE, PERMISSION_DETAIL_RE, resultTextOf, recallTriggerOf, buildExperienceQuery, WORK_REPORT_RETRIEVAL_SUMMARY_CHARS, cleanOneLine, summaryForCandidate, retrievalCandidatesOf } from '../retrieval/request-builder.ts'
 import type { RetrievalCandidate } from '../retrieval/request-builder.ts'
 import type { WorkReportRecord } from '../diagnostics/probe.ts'
@@ -63,6 +63,25 @@ export async function applyStepBDelivery(
   //       且**零报错、零探针记录**（`stage4-deliver` 恒为 0）。⇒ 此处只判"有没有活要干"。
   const preSession = sessionIdOf(exec && exec.agent)
   const preState = SESSIONS.get(preSession)
+  // 🔴 v55 兜底：hook 可能没把 `card-cmd` 送到本会话 ⇒ `s.cards` 陈旧 ⇒
+  //    注入判定看不到「本会话占用的 Executing 卡」⇒ 整段注入静默不发生。
+  //    这里在判定前**只读地现扫一次**（低成本；⛔ 不写文件、⛔ 不改卡、不改变判定方向）。
+  if (preState !== undefined) {
+    try {
+      if (myOccupiedCards(preState).length === 0) {
+        const freshCards = scanCards()
+        preState.cards = freshCards
+        emit({
+          ev: 'card-rescan-fallback', obs: OBS, session: preSession,
+          hit: myOccupiedCards(preState).length, cards: freshCards.length,
+          note: 'hook 未送 card-cmd ⇒ 注入判定前现扫一次（v55 · ⛔ 不猜）',
+          at: Date.now(), mono: mono(),
+        })
+      }
+    } catch (err) {
+      noteCatchFail('inject:rescan-fallback', err)
+    }
+  }
   const hasQueuedCandidate = preState !== undefined && preState.pendingDelivery !== null
   // 注入实验是**第四个来源**（与 ①②③ 独立）—— 只要它开着，就不得早退，
   //    否则"提醒关掉/无候选"时会把它一起静默吞掉（与 修过的同类缺陷同源）。

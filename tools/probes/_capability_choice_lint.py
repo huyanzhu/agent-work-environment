@@ -302,14 +302,18 @@ def _probe_files():
 
 
 def probe_index():
-    """→ `(first_edit, cap_reads)`：{session: 第一次 edit 的 datetime} / {session: read capabilities/ 次数}。
+    """→ `(first_edit, cap_reads, cap_unresolved)`。
 
-    只读 `ev=tool-sig`；`pathClass` **不限**（开工判据按规格不看路径）。
+    · `first_edit`：{session: 第一次 edit 的 datetime}
+    · `cap_reads`：{session: read `capabilities/` 次数}
+    · `cap_unresolved`：{session: 有 read 但 `pathClass` 无法细分（空 / 只到父目录前缀）次数}
+      ⇒ 证据不可判：⛔ 不再据此判「声称用了但没打开」（子会话在别的工作区根下时，
+         probe 只记 `pathClass` 前缀，文件名丢失 —— 真实假红）。
     """
-    first_edit, cap_reads = {}, {}
+    first_edit, cap_reads, cap_unresolved = {}, {}, {}
     paths = _probe_files()
     if not paths:
-        return first_edit, cap_reads
+        return first_edit, cap_reads, cap_unresolved
     for path in paths:
         opener = gzip.open if path.endswith(".gz") else io.open
         with opener(path, "rt", encoding="utf-8", errors="replace") as fh:
@@ -331,9 +335,14 @@ def probe_index():
                         continue
                     if sid not in first_edit or dt < first_edit[sid]:
                         first_edit[sid] = dt
-                elif tool == "read" and "capabilities/" in str(d.get("pathClass") or ""):
-                    cap_reads[sid] = cap_reads.get(sid, 0) + 1
-    return first_edit, cap_reads
+                elif tool in ("read", "grep"):
+                    pc = str(d.get("pathClass") or "")
+                    if "capabilities/" in pc:
+                        cap_reads[sid] = cap_reads.get(sid, 0) + 1
+                    elif pc == "" or pc.endswith("/"):
+                        # 目录级前缀（如 work/_clone/）⇒ 无法判断读的是不是能力文件
+                        cap_unresolved[sid] = cap_unresolved.get(sid, 0) + 1
+    return first_edit, cap_reads, cap_unresolved
 
 
 # ── 判据 ────────────────────────────────────────────────────────────────────
@@ -411,10 +420,15 @@ def _check_single_field(card_path, rows, probe, stage, base):
         base["detail"] = "`.log` 有 `能力` 行且 name=none（单字段卡）" + note
         return base
     n = probe[1].get(sid, 0)
+    unk = probe[2].get(sid, 0) if len(probe) > 2 else 0
     if n > 0:
         base["verdict"] = "PASS"
         base["detail"] = ("`.log` 有 `能力` 行（name=%s）· 该会话 read `capabilities/` %d 次%s"
                           % (name, n, note))
+    elif unk > 0:
+        base["verdict"] = "SKIP"
+        base["detail"] = ("`.log` 有 `能力` 行（name=%s）· 该会话有 read 但**路径无法细分**"
+                          "（%d 次）⇒ 证据不可判，⛔ 不判 FAIL" % (name, unk))
     else:
         base["verdict"] = "FAIL"
         base["detail"] = ("`.log` 有 `能力` 行（name=%s），但探针里该会话**没有** "
@@ -529,10 +543,15 @@ def check_one(card_path, stage, probe=None, tpl=None):
         base["detail"] = "`.log` 有 `能力-收尾` 行且 name=none（⛔ 不要求 capabilities/ read）"
         return base
     n = probe[1].get(sid, 0)
+    unk = probe[2].get(sid, 0) if len(probe) > 2 else 0
     if n > 0:
         base["verdict"] = "PASS"
         base["detail"] = ("`.log` 有 `能力-收尾` 行（name=%s）· 该会话 read `capabilities/` %d 次"
                           % (name, n))
+    elif unk > 0:
+        base["verdict"] = "SKIP"
+        base["detail"] = ("`.log` 有 `能力-收尾` 行（name=%s）· read 路径无法细分（%d 次）"
+                          "⇒ 证据不可判，⛔ 不判 FAIL" % (name, unk))
     else:
         base["verdict"] = "FAIL"
         base["detail"] = ("`.log` 有 `能力-收尾` 行（name=%s），但探针里该会话**没有** "
