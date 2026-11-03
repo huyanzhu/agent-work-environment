@@ -1,7 +1,14 @@
 # Changelog
 
-> 当前版本：**0.1.22**。版本号的唯一事实源是 `package.json` 的 `version` 字段；
+> 当前版本：**0.1.23**。版本号的唯一事实源是 `package.json` 的 `version` 字段；
 > 发布物的 `package.json`、Git tag 与本文件标题应保持三处一致。
+
+## 0.1.23
+
+- **族维护规则统一（经验族 = 能力族）**：新增的门槛是同一条 —— **有相关族/域 ⇒ 不动；没有 ⇒ 才加**；
+  族/域数量**不是 KPI**。新增族卡时必须写「为什么不复用现有族」，新增域时必须写「为什么不塞进现有域」。
+- 落点：`docs/CAPABILITIES.md §五` 加前置判据列与共同规则 · `capabilities/README.md` 补新增域判据 ·
+  `maintenance-skills/experience-family-pipeline.md` 新增 §0.1 族卡新增判据 · `domains/experiences/README.md` 补指针。
 
 ## 0.1.22
 

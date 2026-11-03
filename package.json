@@ -1,6 +1,6 @@
 {
   "name": "agent-work-environment",
-  "version": "0.1.22",
+  "version": "0.1.23",
   "private": true,
   "type": "module",
   "description": "Agent 的工作环境（可核）—— AI-OS 本体：约定层 + 工作记忆 + 校验门 + 能力/经验 + 一条仍在验证中的投递通道",

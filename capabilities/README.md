@@ -22,6 +22,7 @@
 
 ## 规则
 
+- **新增域的前置判据**：现有 8 域覆盖不到才加**域**；能塞进现有域就加**片**，⛔ 不加域（详见 `docs/CAPABILITIES.md §五`）。族数量不是 KPI。
 - **领域是唯一分类轴**：先调 `auto_capability`（`what` 一句）拿 8 个领域词表，按本次**主改动所在域**选**一个**域能力，⛔ 不要一次选多个域；跨域任务也按**主改动**选，⛔ 不按阶段拆成多个能力。
 - 记录（v4 缺省卡 · 单字段）：`python tools/task_card.py capability <TASK-ID> --name <域能力名|none> --why "…"`（⛔ 省略 `--stage`；只有旧 v1/v2/v3 三阶段卡才用 `--stage start|impl|close`）。
 - 只想先看「现在会提示哪个能力」而不写记录（**只读 · 不记账**）：`python tools/task_card.py capability-hint <TASK-ID>` —— `--stage` **可省略**（按单字段卡口径，与 `claim` 同一文案）；显式给 `start|impl|close` 仍接受，但域合并后提示按**域**出，阶段不再改变文案。

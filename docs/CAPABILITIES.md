@@ -101,11 +101,15 @@ alias: [锟斤拷, 问号方块, 中文变怪字, ...]
 
 ## 五、怎么加新的（别绕过闸门）
 
-| 加什么 | 模板 | 校验 |
-|---|---|---|
-| 一个域能力（或给现有域加片） | `capabilities/_TEMPLATE-domain.md` | `python tools/probes/_capability_field_lint.py`（含 INDEX 交叉校验） |
-| 一张经验族卡 | `domains/experiences/_TEMPLATE-family.md` | `_family_field_lint.py` + `_family_members_lint.py` |
-| 一条坑 | `task_cards/memory/PITFALLS.template.md` | `_pitfalls_id_lint.py` |
+| 加什么 | 前置判据（能力族 / 经验族**同一条**） | 模板 | 校验 |
+|---|---|---|---|
+| 一个域能力（或给现有域加片） | **现有 8 域覆盖不到才加域**；能塞进现有域就加片，⛔ 不加域 | `capabilities/_TEMPLATE-domain.md` | `python tools/probes/_capability_field_lint.py`（含 INDEX 交叉校验） |
+| 一张经验族卡 | **现有 6 族覆盖不到才加族**；有相关族 ⇒ **不动**（新坑并入该族） | `domains/experiences/_TEMPLATE-family.md` | `_family_field_lint.py` + `_family_members_lint.py` |
+| 一条坑 | 编号唯一且连续（P# 是稳定引用键） | `task_cards/memory/PITFALLS.template.md` | `_pitfalls_id_lint.py` |
+
+> **共同规则（能力族 / 经验族一致）**：**有相关族 ⇒ 不动；没有 ⇒ 才加**。族/域数量**不是 KPI**，
+> 不为"看起来完整"新增。新增族卡时必须写一句「**为什么不复用现有族**」；新增域时必须写「为什么不塞进现有域」。
+> 新增同批完成：登记/成员声明/期望集 + 对应 lint 全绿 + （经验族）回归门。
 
 新增**领域**（不是给现有域加片）要走三步：① 先扩 `task_cards/NEEDS-VOCAB.md` 的领域轴；② `axis_domain` 与每一片的 `parts[].domain` 取同一个词表值；③ 同步 `capabilities/INDEX.md`（加行 + 改「N 个域能力」计数）。
 没有机械闸门抓"漏改 INDEX"以外的嘴瓢——只能靠这张清单。
