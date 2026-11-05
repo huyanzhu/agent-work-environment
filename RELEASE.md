@@ -72,11 +72,11 @@ python tools/probes/_release_manifest.py --root . --verify MANIFEST.sha256   # �
 | `runtime/` | 21 |
 | `samples/` | 4 |
 | `task_cards/` | 14 |
-| `tools/` | 67 |
+| `tools/` | 68 |
 | `workspaces/` | 6 |
 | `样例账本.md` | 1 |
 | `MANIFEST.sha256` | 1 |
 | `RELEASE.md` | 1 |
-| **合计** | **271** |
+| **合计** | **272** |
 
 > 生成命令：`python tools/release_assemble.py`（作者侧工具，**未随发布**）。

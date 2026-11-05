@@ -44,7 +44,7 @@ python tools/task_card.py states
 # ② 能力库字段校验：应 合计 8 · OK 8 · WARN 0 · FAIL 0
 python tools/probes/_capability_field_lint.py
 
-# ③ tools 测试：应 Ran 147 tests · OK
+# ③ tools 测试：应 Ran 153 tests · OK
 python -m unittest discover -s tools/tests -p "test_*.py"
 
 # ④ runtime 隔离自测：应 合计 208 项 · 通过 207 · 失败 1

@@ -67,7 +67,7 @@ cp -r .aios-sample .aios      # 首次使用必做：Windows 用 xcopy /E /I .ai
 ```bash
 python tools/task_card.py states                          # 卡系统：打印 State 校验结果
 python tools/probes/_capability_field_lint.py             # 能力库：合计 8 · OK 8
-python -m unittest discover -s tools/tests -p "test_*.py" # 应：Ran 147 tests · OK
+python -m unittest discover -s tools/tests -p "test_*.py" # 应：Ran 153 tests · OK
 node runtime/tests/activation.test.mjs                    # 应：合计 208 项 · 通过 207 · 失败 1
 ```
 

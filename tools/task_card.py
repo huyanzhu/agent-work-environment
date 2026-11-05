@@ -832,7 +832,8 @@ def _capability_names():
             continue
         out.add(n[:-3])
     try:
-        al = json.load(open(os.path.join(CAPS_DIR, "_aliases.json"), encoding="utf-8"))
+        with open(os.path.join(CAPS_DIR, "_aliases.json"), encoding="utf-8") as fh:
+            al = json.load(fh)
         if isinstance(al, dict):
             out.update(str(k) for k in al.keys())
     except (OSError, ValueError):
@@ -848,7 +849,8 @@ def domain_capability_of(domain):
         if not (n.startswith("domain-") and n.endswith(".md")):
             continue
         try:
-            s = open(os.path.join(CAPS_DIR, n), encoding="utf-8").read()
+            with open(os.path.join(CAPS_DIR, n), encoding="utf-8") as fh:
+                s = fh.read()
         except OSError:
             continue
         for line in s.split("\n")[:14]:
@@ -1029,7 +1031,8 @@ def claim_hint_mode():
 def _domain_intro(cap_name):
     """域能力名 ⇒ 该文件 frontmatter 的 `intro`（读不到 ⇒ `""`）。"""
     try:
-        s = open(os.path.join(CAPS_DIR, cap_name + ".md"), encoding="utf-8").read()
+        with open(os.path.join(CAPS_DIR, cap_name + ".md"), encoding="utf-8") as fh:
+            s = fh.read()
     except OSError:
         return ""
     for line in s.split("\n")[:10]:

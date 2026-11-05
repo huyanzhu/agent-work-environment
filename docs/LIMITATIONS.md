@@ -20,7 +20,7 @@ python tools/task_card.py states
 #   ✅ 全部卡的 State 均在值域内（missing=0 · off-vocab=0）
 
 python -m unittest discover -s tools/tests -p "test_*.py"
-#   Ran 147 tests · OK
+#   Ran 153 tests · OK
 
 node runtime/tests/activation.test.mjs
 #   合计 208 项 · 通过 207 · 失败 1

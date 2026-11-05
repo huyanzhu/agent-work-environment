@@ -1,7 +1,16 @@
 # Changelog
 
-> 当前版本：**0.1.23**。版本号的唯一事实源是 `package.json` 的 `version` 字段；
+> 当前版本：**0.1.24**。版本号的唯一事实源是 `package.json` 的 `version` 字段；
 > 发布物的 `package.json`、Git tag 与本文件标题应保持三处一致。
+
+## 0.1.24
+
+- **修 `task_card.py` 未关闭文件句柄**：`_capabilities` 读 `_aliases.json`、域能力文件、`_domain_intro`
+  三处改为 `with open(...) as fh`（Windows 下会留下未释放句柄；无功能变化）。
+- **v2 模板能力引导**：与 v4 口径一致 —— 先调 `auto_capability`（`what` 一句）拿 8 个领域词表，
+  `INDEX.md` 降为对照目录。
+- **新增 `test_pitfalls_id_lint`**：6 条回归用例（真库全绿 / 缺号 / 名单 / 列数 / 内联竖线 / 重复号），
+  工具单测 147 → **153**。
 
 ## 0.1.23
 
